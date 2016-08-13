@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">A1</string>
+    <string name="header_name">Test Prime</string>
+    <string name="static_is_prime">Is a prime number?</string>>
+    <string name="dummy_prime">Prime</string>>
+    <string name="correct">Correct</string>>
+    <string name="incorrect">Incorrect</string>>
+    <string name="next">Next</string>>
+    <string name="result_correct">Correct answer</string>>
+    <string name="result_incorrect">Incorrect answer</string>>
+</resources>
