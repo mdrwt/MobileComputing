@@ -34,6 +34,7 @@
             android:text="@string/correct"
             android:id="@+id/button"
             android:onClick="isPrimeTapped"
+            android:drawableLeft="@drawable/thumbsup"
             android:layout_marginBottom="105dp"
             android:layout_above="@+id/nextButton"
             android:layout_toLeftOf="@+id/button2"
@@ -44,6 +45,7 @@
             android:layout_height="wrap_content"
             android:text="@string/incorrect"
             android:id="@+id/button2"
+            android:drawableLeft="@drawable/thumbsdown"
             android:onClick="isNotPrimeTapped"
             android:layout_alignTop="@+id/button"
             android:layout_centerHorizontal="true" />

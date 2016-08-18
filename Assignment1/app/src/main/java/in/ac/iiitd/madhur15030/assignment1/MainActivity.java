@@ -83,6 +83,7 @@ public class MainActivity extends AppCompatActivity {
         randomInt = setRandomInteger();
     }
 
+    // From stackoverflow.com
     private boolean checkPrime(int n) {
         for(int i=2; 2*i<n; i++) {
             if(n%i==0) {
