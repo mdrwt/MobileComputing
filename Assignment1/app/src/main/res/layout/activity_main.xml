@@ -7,7 +7,8 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="in.ac.iiitd.madhur15030.assignment1.MainActivity">
+    tools:context="in.ac.iiitd.madhur15030.assignment1.MainActivity"
+    android:background="#67738d">
 
 
     <Button
@@ -16,11 +17,11 @@
         android:text="@string/next"
         android:id="@+id/nextButton"
         android:onClick="nextTapped"
-        android:layout_marginBottom="57dp"
+        android:drawableRight="@drawable/next"
         android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true" />
+        android:layout_alignParentEnd="true" />
 
-    <LinearLayout
+    <RelativeLayout
         android:orientation="horizontal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -32,25 +33,43 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/correct"
-            android:id="@+id/button"
+            android:id="@+id/correctButton"
             android:onClick="isPrimeTapped"
             android:drawableLeft="@drawable/thumbsup"
-            android:layout_marginBottom="105dp"
-            android:layout_above="@+id/nextButton"
-            android:layout_toLeftOf="@+id/button2"
-            android:layout_alignRight="@+id/button3"/>
-
+            android:layout_marginBottom="105dp"/>
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/incorrect"
-            android:id="@+id/button2"
+            android:id="@+id/incorrectButton"
             android:drawableLeft="@drawable/thumbsdown"
             android:onClick="isNotPrimeTapped"
-            android:layout_alignTop="@+id/button"
+            android:layout_alignEnd="@+id/cheatButton"
             android:layout_centerHorizontal="true" />
 
-    </LinearLayout>
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/showhint"
+            android:id="@+id/hintButton"
+            android:drawableStart="@drawable/hint"
+            android:onClick="showHintTapped"
+            android:layout_marginTop="10dp"
+            android:layout_below="@+id/incorrectButton"
+            android:layout_alignParentStart="true" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/showcheat"
+            android:layout_marginTop="10dp"
+            android:id="@+id/cheatButton"
+            android:drawableStart="@drawable/cheat"
+            android:onClick="showCheatTapped"
+            android:layout_below="@+id/incorrectButton"
+            android:layout_toEndOf="@+id/hintButton" />
+
+    </RelativeLayout>
 
     <LinearLayout
         android:orientation="horizontal"
@@ -67,10 +86,11 @@
             android:text="@string/dummy_prime"
             android:textSize="22sp"
             android:id="@+id/prime_number"
-            android:textColor="@color/abc_input_method_navigation_guard"
+            android:textColor="#FFFFFF"
             android:layout_alignTop="@+id/textView2"
             android:layout_toStartOf="@+id/textView2"
-            android:layout_marginRight="5dp"/>
+            android:layout_marginRight="5dp"
+            android:textStyle="bold" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -79,7 +99,8 @@
             android:textSize="22dp"
             android:id="@+id/textView2"
             android:layout_above="@+id/linearLayout"
-            android:layout_centerHorizontal="true" />
+            android:layout_centerHorizontal="true"
+            android:textColor="#FFFFFF" />
     </LinearLayout>
 
 
