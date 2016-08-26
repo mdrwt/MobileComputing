@@ -19,7 +19,7 @@
         android:text="@string/showhint"
         android:id="@+id/revealHintButton"
         android:onClick="revealHintTapped"
-        android:layout_marginBottom="62dp"
+        android:layout_marginBottom="24dp"
         android:drawableRight="@drawable/hint"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true" />

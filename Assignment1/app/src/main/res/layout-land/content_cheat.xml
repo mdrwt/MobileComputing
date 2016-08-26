@@ -17,19 +17,21 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/showcheat"
+        android:textColor="#ffffff"
         android:id="@+id/revealCheatButton"
         android:onClick="revealCheatTapped"
         android:layout_centerVertical="true"
         android:drawableRight="@drawable/cheat"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="157dp" />
+        android:layout_marginBottom="24dp"
+        android:backgroundTint="#ff3434"/>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="@string/cheat_text_noshown"
+        android:text="@string/cheat_text_noshown1"
         android:id="@+id/cheatTV"
         android:textColor="#FFFFFF"
         android:layout_alignParentTop="true"

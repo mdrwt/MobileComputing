@@ -10,10 +10,11 @@
     <string name="showcheat">Show Cheat</string>
     <string name="result_correct">Correct answer</string>
     <string name="result_incorrect">Incorrect answer</string>
-    <string name="title_activity_hint">Get Hint</string>
+    <string name="title_activity_hint">Get Hint for question</string>
 
     <string name="hint_text_noshown">Do you want hint?</string>
-    <string name="cheat_text_noshown">Do you want to cheat and know answer?</string>
+    <string name="cheat_text_noshown1">Do you want to cheat and know if</string>
+    <string name="cheat_text_noshown2">is a Prime Number?</string>
 
     <string name="hint_text">A prime number (or a prime) is a natural number greater than 1 that has no positive divisors other than 1 and itself. A natural number greater than 1 that is not a prime number is called a composite number.</string>
     <string name="cheat_answer_is_prime"> is a Prime Number</string>

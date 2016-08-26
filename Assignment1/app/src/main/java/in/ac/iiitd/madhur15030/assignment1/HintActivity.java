@@ -5,11 +5,13 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 public class HintActivity extends AppCompatActivity {
 
     public TextView hintTV;
+    public Button revealHintButton;
     private static final String STATE_HINT_SHOWN = "hintShown";
     private boolean hintShown;
 
@@ -21,6 +23,7 @@ public class HintActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         hintTV = (TextView) findViewById(R.id.hintTV);
+        revealHintButton = (Button)findViewById(R.id.revealHintButton);
 
         Intent intent = getIntent();
         hintShown = intent.getBooleanExtra(STATE_HINT_SHOWN, false);
@@ -39,11 +42,11 @@ public class HintActivity extends AppCompatActivity {
         Intent intent = new Intent();
         intent.putExtra(STATE_HINT_SHOWN, true);
         setResult(RESULT_OK, intent);
+        revealHintButton.setEnabled(false);
     }
     public void revealHintTapped(View view) {
         if(!hintShown) {
             showHint();
-
         }
     }
 

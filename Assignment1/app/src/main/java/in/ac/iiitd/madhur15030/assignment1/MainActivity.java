@@ -38,6 +38,7 @@ public class MainActivity extends AppCompatActivity {
         if(savedInstanceState!=null) {
             randomInt = savedInstanceState.getInt(STATE_RANDOM_INT);
             hintShownMain=savedInstanceState.getBoolean(STATE_HINT_SHOWN);
+            cheatShownMain=savedInstanceState.getBoolean(STATE_CHEAT_SHOWN);
             primeNumberTV.setText(""+randomInt);
             isPrime = checkPrime(randomInt);
         }
@@ -50,6 +51,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onSaveInstanceState(Bundle outState) {
         outState.putInt(STATE_RANDOM_INT, randomInt);
         outState.putBoolean(STATE_HINT_SHOWN, hintShownMain);
+        outState.putBoolean(STATE_CHEAT_SHOWN, cheatShownMain);
 
         super.onSaveInstanceState(outState);
     }

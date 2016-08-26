@@ -36,7 +36,8 @@
             android:id="@+id/correctButton"
             android:onClick="isPrimeTapped"
             android:drawableLeft="@drawable/thumbsup"
-            android:layout_marginBottom="105dp"/>
+            android:layout_marginBottom="105dp"
+            android:backgroundTint="#9ef28f" />
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -45,7 +46,8 @@
             android:drawableLeft="@drawable/thumbsdown"
             android:onClick="isNotPrimeTapped"
             android:layout_alignEnd="@+id/cheatButton"
-            android:layout_centerHorizontal="true" />
+            android:layout_centerHorizontal="true"
+            android:backgroundTint="#ea8e8e" />
 
         <Button
             android:layout_width="wrap_content"
@@ -64,7 +66,10 @@
             android:text="@string/showcheat"
             android:layout_marginTop="10dp"
             android:id="@+id/cheatButton"
+            android:layout_marginLeft="10dp"
+            android:textColor="#ffffff"
             android:drawableStart="@drawable/cheat"
+            android:backgroundTint="#ff3434"
             android:onClick="showCheatTapped"
             android:layout_below="@+id/incorrectButton"
             android:layout_toEndOf="@+id/hintButton" />
