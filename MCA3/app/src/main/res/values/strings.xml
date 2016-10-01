@@ -1,0 +1,37 @@
+<resources>
+    <string name="app_name">Saving Data</string>
+    <string name="perm_select_option">Select an option to demonstrate saving data</string>
+    <string name="perm_btn_key_value">Key Value</string>
+    <string name="perm_btn_storage">Storage</string>
+    <string name="perm_btn_sqlite">Sqlite</string>
+    <string name="title_activity_key_value">Demo Shared Preferences</string>
+    <string name="title_activity_storage_activty">Demo File Storage</string>
+    <string name="title_activity_sqlite">Student Records</string>
+
+    <string name="act_kv_perm_value1">Value1</string>
+    <string name="act_kv_perm_value2">Value2</string>
+    <string name="act_kv_perm_edit">Edit</string>
+    <string name="act_kv_temp_value1">No Save. Type value to save</string>
+    <string name="act_kv_temp_value2">No Save. Type value to save</string>
+
+    <string name="act_add_perm_name">Name</string>
+    <string name="act_add_perm_rollno">Roll No</string>
+    <string name="act_add_perm_currsem">CurrentSemester</string>
+    <string name="act_add_temp_rollno">Roll Number</string>
+    <string name="act_add_temp_name">Full Name</string>
+    <string name="act_add_temp_currsem">Current Semester</string>
+
+    <string name="action_addrecord">Add Student Record</string>
+    <string name="title_activity_add_student_record">Add/Update Student Record</string>
+
+
+    <string name="toast_record_added">Student Record Added/Updated Successfully</string>
+    <string name="toast_record_deleted">Student Record Deleted Successfully</string>
+    <string name="toast_record_notfound">Student Record NOt Found</string>
+
+    <string name="Exception_error_updating_record">Error Updating Student Record</string>
+
+    <string name="key_student_record">KEY_STUDENT_RECORD</string>
+    <string name="key_debug">DEBUG</string>
+    <string name="key_saved_student_record">KEY_SAVED_RECORD</string>
+</resources>

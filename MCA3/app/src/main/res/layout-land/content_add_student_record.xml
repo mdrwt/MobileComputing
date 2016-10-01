@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="in.ac.iiitd.madhur15030.mca3.AddStudentRecordActivity"
+    tools:showIn="@layout/activity_add_student_record"
+    android:background="#67738d">
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/rollnoLinearLayout"
+        android:layout_marginTop="10dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:background="#4e587d">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/act_add_perm_rollno"
+            android:id="@+id/textView3"
+            android:textSize="22dp"
+            android:textColor="#ffffff" />
+
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:enabled="true"
+            android:hint="@string/act_add_temp_rollno"
+            android:id="@+id/rollnoEditTV"
+            android:layout_weight="1"
+            android:textColor="#fde803" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/linearLayout3"
+        android:layout_below="@+id/rollnoLinearLayout"
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="10dp"
+        android:background="#4e587d">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/act_add_perm_name"
+            android:id="@+id/textView4"
+            android:textSize="22dp"
+            android:textColor="#ffffff" />
+
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:enabled="true"
+            android:hint="@string/act_add_temp_name"
+            android:id="@+id/nameEditTV"
+            android:layout_weight="1"
+            android:textColor="#fde803" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/linearLayout4"
+        android:layout_below="@+id/linearLayout3"
+        android:layout_alignParentStart="true"
+        android:background="#4e587d">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/act_add_perm_currsem"
+            android:id="@+id/textView5"
+            android:textSize="22dp"
+            android:textColor="#ffffff" />
+
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:enabled="true"
+            android:hint="@string/act_add_temp_currsem"
+            android:id="@+id/currsemEditTV"
+            android:layout_weight="1"
+            android:textColor="#fde803" />
+    </LinearLayout>
+
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/imageButton5"
+        android:src="@drawable/update_btn"
+        android:background="@null"
+        android:onClick="addUpdateRecordTapped"
+        android:layout_below="@+id/linearLayout4"
+        android:layout_marginTop="16dp"
+        android:layout_marginStart="115dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true" />
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/imageButton6"
+        android:src="@drawable/delete_btn"
+        android:background="@null"
+        android:onClick="deleteRecordTapped"
+        android:layout_alignTop="@+id/imageButton5"
+        android:layout_toRightOf="@+id/imageButton5"
+        android:layout_alignParentBottom="true"
+        android:layout_marginLeft="60dp"/>
+
+</RelativeLayout>
