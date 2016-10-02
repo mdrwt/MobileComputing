@@ -1,0 +1,7 @@
+1. Uses shared preferences to store small amount of data; show its use between different instantiation of application (Mark 2)
+2. Write files (with any data of your choice) to internal storage and external storage. You would also have to demonstrate your knowledge about which files are deleted or retained when an app is deleted and also which files are accessible to an external party and which are not. (Marks 4)
+3. Use SQLite database to store a table (you may choose a simple table e.g. roll number of students, names, current semester). Update the data, retrieve the data, and delete the data (Marks 4)
+
+Bonus Mark 1: will be given to applications which do something extra - e.g. A good UI or nicely written code with documentation etc. or anything that shows that the person has put effort more than just completing the task.
+
+How to submit: upload your Java and XML files (created and modified by you) to Backpack in a zip file. You may continue to use GitHub and demonstrate to the TA using Github. Submission of code files and XML is necessary for plagiarism check.

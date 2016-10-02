@@ -35,6 +35,14 @@ public class KeyValueActivity extends AppCompatActivity {
         String value2 = sharedPref.getString(KEY_VALUE_KEY2, null);
         if(value1!=null) et1.setText(value1);
         if(value2!=null) et2.setText(value2);
+
+    if(savedInstanceState!=null) {
+        et1.setText(savedInstanceState.getString(getString(R.string.key_kv_val1)));
+        et2.setText(savedInstanceState.getString(getString(R.string.key_kv_val2)));
+        et1.setEnabled(savedInstanceState.getBoolean(getString(R.string.key_kv_val1_editable)));
+        et2.setEnabled(savedInstanceState.getBoolean(getString(R.string.key_kv_val2_editable)));
+
+    }
     }
 
     public void editvalue1Tapped(View view) {
@@ -51,5 +59,20 @@ public class KeyValueActivity extends AppCompatActivity {
         if(str2!=null) editor.putString(KEY_VALUE_KEY2, str2);
         editor.commit();
 
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        String val1 = et1.getText().toString();
+        String val2 = et2.getText().toString();
+        boolean val1_enabled = et1.isEnabled();
+        boolean val2_enabled = et1.isEnabled();
+
+        outState.putString(getString(R.string.key_kv_val1), val1);
+        outState.putString(getString(R.string.key_kv_val2), val2);
+        outState.putBoolean(getString(R.string.key_kv_val1_editable), val1_enabled);
+        outState.putBoolean(getString(R.string.key_kv_val2_editable), val2_enabled);
+
+        super.onSaveInstanceState(outState);
     }
 }

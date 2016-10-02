@@ -52,6 +52,11 @@
     <string name="key_key_ext_storage_fname">KEY_EXTERNAL_FNAME</string>
     <string name="key_ext_storage_content">KEY_EXTERNAL_CONTENT</string>
     <string name="key_ext_storage_isprivate">KEY_EXTERNAL_ISPRIVATE</string>
+    <string name="key_kv_val1">KEY_KV_VAL1</string>
+    <string name="key_kv_val2">KEY_KV_VAL2</string>
+    <string name="key_kv_val1_editable">KEY_KV_VAL1_ENABLED</string>
+    <string name="key_kv_val2_editable">KEY_KV_VAL2_ENABLES</string>
+
     <string name="key_debug">DEBUG</string>
     <string name="key_exception">EXCEPTION</string>
     key_exception
