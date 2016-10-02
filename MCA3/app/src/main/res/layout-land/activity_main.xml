@@ -19,7 +19,8 @@
         android:backgroundTint="#ea8e8e"
         android:layout_alignParentBottom="true"
         android:layout_alignStart="@+id/textView"
-        android:layout_marginBottom="69dp" />
+        android:layout_marginBottom="69dp"
+        android:textSize="24dp" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -40,6 +41,9 @@
         android:id="@+id/button2"
         android:onClick="storageTapped"
         android:backgroundTint="#fff89d"
+        android:textSize="24dp"
+        android:layout_marginLeft="40dp"
+        android:layout_toRightOf="@+id/button"
         android:layout_alignTop="@+id/button"
         android:layout_centerHorizontal="true" />
 
@@ -50,6 +54,8 @@
         android:id="@+id/button3"
         android:onClick="sqliteTapped"
         android:backgroundTint="#9ef28f"
-        android:layout_alignTop="@+id/button2"
-        android:layout_alignEnd="@+id/textView" />
+        android:textSize="24dp"
+        android:layout_toRightOf="@+id/button2"
+        android:layout_marginLeft="40dp"
+        android:layout_alignTop="@+id/button2" />
 </RelativeLayout>

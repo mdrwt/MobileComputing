@@ -25,18 +25,19 @@
 
         <TextView
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:text="@string/act_kv_perm_value1"
             android:id="@+id/textView2"
             android:textSize="22dp"
-            android:textColor="#ffffff" />
+            android:textColor="#000000"
+            android:background="#d06868" />
 
         <EditText
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:enabled="false"
             android:hint="@string/act_kv_temp_value1"
-            android:id="@+id/editText"
+            android:id="@+id/etv1"
             android:layout_weight="1"
             android:textColor="#fde803" />
     </LinearLayout>
@@ -53,18 +54,20 @@
 
         <TextView
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:text="@string/act_kv_perm_value1"
+
             android:id="@+id/textView3"
             android:textSize="22dp"
-            android:textColor="#ffffff" />
+            android:textColor="#000000"
+            android:background="#d06868" />
 
         <EditText
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:enabled="false"
             android:hint="@string/act_kv_temp_value1"
-            android:id="@+id/editText2"
+            android:id="@+id/etv2"
             android:layout_weight="1"
             android:textColor="#fde803" />
     </LinearLayout>

@@ -19,7 +19,8 @@
         android:layout_marginTop="70dp"
         android:layout_below="@+id/textView"
         android:layout_centerHorizontal="true"
-        android:backgroundTint="#ea8e8e" />
+        android:backgroundTint="#ea8e8e"
+        android:textSize="24dp" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -42,7 +43,8 @@
         android:layout_marginTop="43dp"
         android:layout_below="@+id/button"
         android:layout_centerHorizontal="true"
-        android:backgroundTint="#fff89d" />
+        android:backgroundTint="#fff89d"
+        android:textSize="24dp" />
 
     <Button
         android:layout_width="wrap_content"
@@ -51,7 +53,8 @@
         android:id="@+id/button3"
         android:onClick="sqliteTapped"
         android:layout_below="@+id/button2"
-        android:layout_alignStart="@+id/button2"
         android:layout_marginTop="43dp"
-        android:backgroundTint="#9ef28f" />
+        android:layout_centerHorizontal="true"
+        android:backgroundTint="#9ef28f"
+        android:textSize="24dp" />
 </RelativeLayout>

@@ -4,8 +4,8 @@
     <string name="perm_btn_key_value">Key Value</string>
     <string name="perm_btn_storage">Storage</string>
     <string name="perm_btn_sqlite">Sqlite</string>
-    <string name="title_activity_key_value">Demo Shared Preferences</string>
-    <string name="title_activity_storage_activty">Demo File Storage</string>
+    <string name="title_activity_key_value">Shread Preferences</string>
+    <string name="title_activity_storage_activty">File Storage Options</string>
     <string name="title_activity_sqlite">Student Records</string>
 
     <string name="act_kv_perm_value1">Value1</string>
@@ -13,6 +13,16 @@
     <string name="act_kv_perm_edit">Edit</string>
     <string name="act_kv_temp_value1">No Save. Type value to save</string>
     <string name="act_kv_temp_value2">No Save. Type value to save</string>
+
+    <string name="act_st_temp_int_fname">FileName to save/get data</string>
+    <string name="act_st_temp_int_Content">Content to save</string>
+    <string name="act_st_perm_int_save">Save</string>
+    <string name="act_st_perm_int_get">Get</string>
+    <string name="act_st_perm_int_label">Save/Fetch from INTERNAL storage</string>
+    <string name="act_st_perm_ext_label">Save/Fetch from EXTERNAL storage</string>
+    <string name="act_st_perm_ext_private">Private</string>
+    <string name="act_st_perm_ext_store_writable">External Storage is writable</string>
+
 
     <string name="act_add_perm_name">Name</string>
     <string name="act_add_perm_rollno">Roll No</string>
@@ -27,11 +37,23 @@
 
     <string name="toast_record_added">Student Record Added/Updated Successfully</string>
     <string name="toast_record_deleted">Student Record Deleted Successfully</string>
-    <string name="toast_record_notfound">Student Record NOt Found</string>
+    <string name="toast_record_notfound">Student Record Not Found</string>
+    <string name="toast_file_read_error">An error occured while reading file.\nCheck if file exists.</string>
+    <string name="toast_file_write_error">An error occured while writing file.\nCheck if file exists.</string>
+    <string name="toast_file_write_success">File written successfully</string>
+    <string name="toast_file_write_to">File written to </string>
+    <string name="toast_file_read_from">File read from</string>
 
     <string name="Exception_error_updating_record">Error Updating Student Record</string>
 
     <string name="key_student_record">KEY_STUDENT_RECORD</string>
+    <string name="key_int_storage_fname">KEY_INTERNAL_FNAME</string>
+    <string name="key_int_storage_content">KEY_INTERNAL_CONTENT</string>
+    <string name="key_key_ext_storage_fname">KEY_EXTERNAL_FNAME</string>
+    <string name="key_ext_storage_content">KEY_EXTERNAL_CONTENT</string>
+    <string name="key_ext_storage_isprivate">KEY_EXTERNAL_ISPRIVATE</string>
     <string name="key_debug">DEBUG</string>
+    <string name="key_exception">EXCEPTION</string>
+    key_exception
     <string name="key_saved_student_record">KEY_SAVED_RECORD</string>
 </resources>
