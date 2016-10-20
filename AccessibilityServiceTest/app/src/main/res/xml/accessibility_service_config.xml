@@ -1,6 +1,7 @@
 <accessibility-service xmlns:android="http://schemas.android.com/apk/res/android"
     android:description="@string/accessibility_service_description"
-    android:packageNames="in.ac.iiitd.madhur15030.testproject"
+    android:packageNames="com.myntra.android, in.ac.iiitd.madhur15030.testproject"
     android:canRetrieveWindowContent="true"
+    android:notificationTimeout="100"
     android:settingsActivity="com.example.android.accessibility.ServiceSettingsActivity"
     />
