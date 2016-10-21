@@ -4,6 +4,7 @@ import android.accessibilityservice.AccessibilityService;
 import android.accessibilityservice.AccessibilityServiceInfo;
 import android.content.Intent;
 import android.nfc.Tag;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.accessibility.AccessibilityEvent;
 import android.view.accessibility.AccessibilityNodeInfo;
@@ -18,6 +19,7 @@ public class MyAccessibilityService extends AccessibilityService {
 
     public DBHelper dbh=null;
     private boolean loginShouldSave=false;
+    private boolean loginShouldFillPassword=false;
 
     private String getEventType(AccessibilityEvent event) {
         switch (event.getEventType()) {
@@ -82,16 +84,10 @@ public class MyAccessibilityService extends AccessibilityService {
                         loginNeverPasswordTapped();
                     }
                 }
-
-
-            }
-            else if(event.getPackageName().equals("in.ac.iiitd.mt14033.passwordmanager") &&
-                    event.getClassName().equals("android.widget.Button") &&
-                    event.getEventType()==AccessibilityEvent.TYPE_VIEW_CLICKED) {
-                if(source.getParent().getContentDescription().equals("loginfillpasswordpopup")) {
+                else if(source.getParent().getContentDescription().equals("loginfillpasswordpopup")) {
 
                     if(source.getText().equals("Fill")) {
-
+                        loginShouldFillPassword=true;
                     }
                     else if(source.getText().equals("Cancel")) {
 
@@ -100,6 +96,7 @@ public class MyAccessibilityService extends AccessibilityService {
 
 
             }
+
             else if(isLoginPage(getRootInActiveWindow())) {
                 Log.v(TAG, "This is a login page");
                 if((event.getEventType()==AccessibilityEvent.TYPE_VIEW_FOCUSED
@@ -137,7 +134,6 @@ public class MyAccessibilityService extends AccessibilityService {
 //                   }
                 }
                 else if(event.getEventType()==AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED) {
-                    Log.v(TAG, "came her etoo");
                     if(isLoginPage(source) && loginShouldSave) {
                         loginShouldSave=false;
                         AccessibilityNodeInfo usernamefield = getUserNameField(getRootInActiveWindow());
@@ -149,7 +145,15 @@ public class MyAccessibilityService extends AccessibilityService {
                         boolean res = dbh.addPassword(pm);
                         if(res)
                             Log.v(TAG, "added password successfully");
+                    }
+                    else if(loginShouldFillPassword) {
+                        loginShouldFillPassword=false;
+                        AccessibilityNodeInfo passwordfield = getPasswordField(getRootInActiveWindow());
 
+                        Bundle arguments = new Bundle();
+                        arguments.putCharSequence(AccessibilityNodeInfo.ACTION_ARGUMENT_SET_TEXT_CHARSEQUENCE, "DUMMYPASSS");
+                        boolean resp = source.performAction(AccessibilityNodeInfo.ACTION_SET_TEXT, arguments);
+                        Log.v(TAG, "filled password successfully result: "+String .valueOf(resp));
 
                     }
                 }
@@ -196,12 +200,7 @@ public class MyAccessibilityService extends AccessibilityService {
         String username = nodeInfo.getText().toString();
         String packagename = nodeInfo.getPackageName().toString();
         PasswordManager pm = dbh.getPasswordForUsernameAndPackage(username, packagename);
-        if(pm!=null) {
-            return true;
-        }
-        else {
-            return false;
-        }
+        return pm != null;
 
     }
 
@@ -355,6 +354,7 @@ public class MyAccessibilityService extends AccessibilityService {
         info.flags = AccessibilityServiceInfo.DEFAULT;
         info.eventTypes = AccessibilityEvent.TYPES_ALL_MASK;
         info.feedbackType = AccessibilityServiceInfo.FEEDBACK_GENERIC;
+
         setServiceInfo(info);
     }
 

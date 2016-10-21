@@ -4,5 +4,5 @@
     android:accessibilityEventTypes="typeViewFocused|typeWindowContentChanged"
     android:accessibilityFeedbackType="feedbackGeneric"
     android:notificationTimeout="200"
-    android:accessibilityFlags="flagReportViewIds"
+    android:accessibilityFlags="flagDefault"
     android:canRetrieveWindowContent="true" />
