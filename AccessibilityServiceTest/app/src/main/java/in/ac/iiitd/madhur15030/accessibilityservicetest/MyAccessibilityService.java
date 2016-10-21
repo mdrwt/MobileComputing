@@ -55,14 +55,13 @@ public class MyAccessibilityService extends AccessibilityService {
     @Override
     public void onAccessibilityEvent(AccessibilityEvent event) {
 
-//        Log.v(TAG, String.format("****onAccessibilityEvent: [type] %s [class] %s [package] %s\n",
-//                getEventType(event), event.getClassName(), event.getPackageName()));
         if(event.getSource()==null) {
             return;
         }
         else {
             AccessibilityNodeInfo source  = event.getSource();
             AccessibilityNodeInfo parent = source.getParent();
+
 
             if(isLoginPage(source)) {
                 Log.v(TAG, "This is a login page");
@@ -73,22 +72,20 @@ public class MyAccessibilityService extends AccessibilityService {
                     Log.v(TAG, getEventType(event));
                    if(event.isPassword()) {
                        Log.v(TAG, "is password field");
-                       AccessibilityNodeInfo currentUsernameField = getUserNameField(source);
-                       if(currentUsernameField!=null) {
-                           Log.v(TAG, currentUsernameField.getText().toString());
+                       AccessibilityNodeInfo usernameField = getUserNameField(source);
+                       if(usernameField!=null) {
+                           Log.v(TAG,"username text is "+usernameField.getText().toString());
                        }
-                       else if(loginUsernameField!=null)
-                            Log.v(TAG, loginUsernameField.getText().toString());
                    }
-                   else {
-                       AccessibilityNodeInfo field = getUserNameField(source);
-                       if(field!=null) {
-                            loginUsernameField=field;
-                           Log.v(TAG, loginUsernameField.getText().toString());
-
-                       }
-
-                   }
+//                   else {
+//                       AccessibilityNodeInfo field = getUserNameField(source);
+//                       if(field!=null) {
+//                            loginUsernameField=field;
+//                           Log.v(TAG, loginUsernameField.getText().toString());
+//
+//                       }
+//
+//                   }
                 }
 
 
@@ -118,15 +115,21 @@ public class MyAccessibilityService extends AccessibilityService {
             AccessibilityNodeInfo child = parent.getChild(i);
             if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.JELLY_BEAN_MR2) {
                 CharSequence textchar = child.getText();
+                CharSequence descchar = child.getContentDescription();
                 String text = null;
                 if (textchar != null) {
                     text = textchar.toString();
-                } else {
-                    continue;
+                    if (isUsernameField(text)) {
+                        return child;
+                    }
                 }
-                if (isUsernameField(text)) {
-                    return child;
+                if(descchar!=null) {
+                    String desc = descchar.toString();
+                    if(isUsernameField(desc)) {
+                        return child;
+                    }
                 }
+
             }
         }
         return null;
