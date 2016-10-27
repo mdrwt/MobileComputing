@@ -10,12 +10,13 @@ import android.util.Log;
 import java.util.ArrayList;
 import java.util.List;
 
+import in.ac.iiitd.mt14033.passwordmanager.model.MatchingLogin;
+
 /**
  * Created by jarvisx on 10/2/2016.
  */
 
 public class DBHelper extends SQLiteOpenHelper {
-
 
     static final String TAG = "MyAccessibilityService";
     // All Static variables
@@ -120,6 +121,37 @@ public class DBHelper extends SQLiteOpenHelper {
                 cursor.getString(1), cursor.getString(2), cursor.getString(3));
 
         return pm;
+    }
+
+    ArrayList<MatchingLogin> getPasswordsForPackagename(String packagename) {
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        String[] projection = new String[] { KEY_ID, KEY_USERID, KEY_URL, KEY_PASSWORD, KEY_SAVE_ALLOWED};
+        String where = KEY_URL+"=\""+packagename+"\"";
+        Log.v(TAG, "where: "+where);
+        Cursor cursor = db.query(
+                TABLE_PASSWORDS,
+                projection,
+                where,
+                null,
+                null,
+                null,
+                null);
+
+
+        ArrayList<MatchingLogin> matchingLogins = new ArrayList<>();
+        if (cursor == null)
+            return matchingLogins;
+        while(cursor.moveToNext()) {
+            String username = cursor.getString(cursor.getColumnIndexOrThrow
+                    (KEY_USERID));
+            String password = cursor.getString(cursor.getColumnIndexOrThrow
+                    (KEY_PASSWORD));
+            String packname = cursor.getString(cursor.getColumnIndexOrThrow
+                    (KEY_URL));
+            matchingLogins.add(new MatchingLogin(username, packname, password));
+        }
+        return  matchingLogins;
     }
 
     int isPasswordSaveAllowed(String username, String packagename) {

@@ -48,7 +48,7 @@
         </service>
 
         <activity
-            android:name=".GetPasswordDialogActivity"
+            android:name=".MatchingLoginsDialogActivity"
             android:label="@string/title_activity_get_password_dialog"
             android:excludeFromRecents="true"
             android:launchMode="singleInstance"

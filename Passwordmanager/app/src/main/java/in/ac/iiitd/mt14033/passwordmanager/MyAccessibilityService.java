@@ -97,85 +97,25 @@ public class MyAccessibilityService extends AccessibilityService {
 
             }
 
-            else if(isLoginPage(getRootInActiveWindow())) {
-                Log.v(TAG, "This is a login page");
-                if((event.getEventType()==AccessibilityEvent.TYPE_VIEW_FOCUSED
-                        || event.getEventType()==AccessibilityEvent.TYPE_VIEW_CLICKED
-                        || event.getEventType()==AccessibilityEvent.TYPE_WINDOW_CONTENT_CHANGED) &&
-                        event.getEventType()!=AccessibilityEvent.TYPE_VIEW_TEXT_CHANGED &&
-                        event.getClassName().equals("android.widget.EditText")) {
-                    Log.v(TAG, getEventType(event));
-                    if(event.isPassword()) {
-                        Log.v(TAG, "is password field");
-                        AccessibilityNodeInfo usernameField = getUserNameField(getRootInActiveWindow());
-                        if(usernameField!=null) {
-                            Log.v(TAG,"username text is "+usernameField.getText().toString());
-                            if(hasSavedPassword(usernameField)) {
-                                Log.v(TAG, "Saved creds found for "+usernameField.getText().toString());
-                                // Show should fill popup
-                                Intent intent = new Intent(this, GetPasswordDialogActivity.class);
-                                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                startActivity(intent);
-                            }
-                            else {
-                                Log.v(TAG, "No saved creds for "+usernameField.getText().toString());
-                                // Show should save popup
-                            }
-                        }
-                    }
-//                   else {
-//                       AccessibilityNodeInfo field = getUserNameField(source);
-//                       if(field!=null) {
-//                            loginUsernameField=field;
-//                           Log.v(TAG, loginUsernameField.getText().toString());
-//
-//                       }
-//
-//                   }
-                }
-                else if(event.getEventType()==AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED) {
-                    if(isLoginPage(source) && loginShouldSave) {
-                        loginShouldSave=false;
-                        AccessibilityNodeInfo usernamefield = getUserNameField(getRootInActiveWindow());
-                        AccessibilityNodeInfo passwordfield = getPasswordField(getRootInActiveWindow());
-                        Log.v(TAG, "username: "+usernamefield.getText().toString());
-                        String username = usernamefield.getText().toString();
-                        String url = usernamefield.getPackageName().toString();
-                        PasswordManager pm = new PasswordManager(0, username, url, "1234");
-                        boolean res = dbh.addPassword(pm);
-                        if(res)
-                            Log.v(TAG, "added password successfully");
-                    }
-                    else if(loginShouldFillPassword) {
-                        loginShouldFillPassword=false;
-                        AccessibilityNodeInfo passwordfield = getPasswordField(getRootInActiveWindow());
+            /**
+             * Check with package name in app if credentials are saved. If credentials are saved then
+             * show credentials in list to choose from.
+             */
+            else if(event.isPassword()) {
+                Log.v(TAG, "Event is password");
+                String curr_package = event.getPackageName().toString();
 
-                        Bundle arguments = new Bundle();
-                        arguments.putCharSequence(AccessibilityNodeInfo.ACTION_ARGUMENT_SET_TEXT_CHARSEQUENCE, "DUMMYPASSS");
-                        boolean resp = source.performAction(AccessibilityNodeInfo.ACTION_SET_TEXT, arguments);
-                        Log.v(TAG, "filled password successfully result: "+String .valueOf(resp));
-
-                    }
-                }
-                else if(event.getEventType()==AccessibilityEvent.TYPE_VIEW_CLICKED &&
-                        event.getClassName().equals("android.widget.Button")) {
-                    String text = event.getText().toString();
-                    if(isLoginField(text)) {
-                        if(isPasswordSaveAllowed(source)) {
-                            Intent intent = new Intent(this, SavePasswordDialogActivity.class);
-                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                            startActivity(intent);
-                        }
-
-                    }
-
-                }
-
+                Intent intent = new Intent(this, MatchingLoginsDialogActivity.class);
+                intent.putExtra(getString(R.string.matching_login_package_name), curr_package);
+                startActivity(intent);
 
             }
-            if (parent == null) {
-                return;
-            }
+
+
+
+
+
+
 
         }
 

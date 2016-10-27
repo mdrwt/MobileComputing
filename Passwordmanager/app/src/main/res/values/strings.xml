@@ -27,4 +27,8 @@
         completions."
     </string>
     <string name="title_activity_get_password_dialog">GetPasswordDialogActivity</string>
+
+    <string name="matching_login_package_name">MatchingLoginsPackageName</string>
+    <string name="matching_logins">Matching Logins</string>
+    <string name="VTAG">PasswordManagerVerbose</string>
 </resources>
