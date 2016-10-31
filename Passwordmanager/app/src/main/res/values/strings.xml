@@ -1,7 +1,9 @@
 <resources>
     <string name="app_name">Password Manager</string>
     <string name="password_length">Length</string>
-    <string name="password_url">Website</string>
+    <string name="password_url">URL</string>
+    <string name="name">Name</string>
+    <string name="username">Username</string>
     <string name="generate_password_button_text">Generate</string>
     <string name="generated_password">Password</string>
     <string name="save_password_button_text">Save</string>
@@ -26,9 +28,16 @@
     <string name="permission_rationale">"Contacts permissions are needed for providing email
         completions."
     </string>
-    <string name="title_activity_get_password_dialog">GetPasswordDialogActivity</string>
+    <string name="title_activity_get_password_dialog"></string>
+    <string name="cancel_button_text">Cancel</string>>
 
     <string name="matching_login_package_name">MatchingLoginsPackageName</string>
     <string name="matching_logins">Matching Logins</string>
+
+    <string name="add_login_button_text">Add Login</string>>
+
+    <!--General-->
+    <string name="selfpackagename">in.ac.iiitd.mt14033.passwordmanager</string>
     <string name="VTAG">PasswordManagerVerbose</string>
+
 </resources>

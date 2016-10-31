@@ -14,6 +14,19 @@
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:layout_margin="@dimen/activity_horizontal_margin">
+        <TableRow>
+            <TextView
+                android:text="@string/name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_column="1" />
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:inputType="textUri"
+                android:id="@+id/add_login_login_name"/>
+
+        </TableRow>
 
         <TableRow>
             <TextView
@@ -48,43 +61,47 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:inputType="textUri"
-                android:id="@+id/password_url"/>
-        </TableRow>
+                android:id="@+id/add_login_url"/>
 
-        <TableRow
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"/>
-        <TableRow
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent">
-            <Button
+        </TableRow>
+        <TableRow>
+            <TextView
+                android:text="@string/username"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/generate_password_button_text"
-                android:id="@+id/generate_password_button"
-                android:layout_column="2" />
+                android:layout_column="1" />
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:inputType="text"
+                android:id="@+id/add_login_username"/>
+
         </TableRow>
 
-        <TableRow
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:minHeight="30dp"/>
+
         <TableRow
             android:layout_width="fill_parent"
             android:layout_height="fill_parent">
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="10dp"
                 android:text="@string/generated_password"
                 android:layout_column="1" />
 
-            <TextView
+            <EditText
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/generated_password"
+                android:inputType="textPassword"
                 android:layout_column="2"
                 />
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/next"
+                android:background="@null"
+                android:id="@+id/generate_password_button"
+                android:layout_column="3" />
         </TableRow>
 
         <TableRow
@@ -104,33 +121,13 @@
         <TableRow
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:minHeight="20dp"/>
-        <TableRow
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
             android:layout_gravity="bottom">
 
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/backup_button_text"
-                android:id="@+id/backup_button"
-                android:layout_column="2" />
         </TableRow>
 
         <TableRow
             android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:minHeight="20dp"/>
-        <TableRow
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent">
-            <Button
-                android:id="@+id/password_list_button"
-                android:text="@string/password_list"
-                android:layout_column="2"
-                android:textAlignment="center"/>
-        </TableRow>
+            android:layout_height="fill_parent"></TableRow>
     </TableLayout>
 
 </ScrollView>

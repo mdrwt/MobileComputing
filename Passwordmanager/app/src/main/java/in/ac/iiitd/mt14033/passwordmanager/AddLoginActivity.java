@@ -1,35 +1,23 @@
 package in.ac.iiitd.mt14033.passwordmanager;
 
-import android.app.ListActivity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.database.Cursor;
-import android.os.Environment;
+import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.webkit.URLUtil;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ListView;
-import android.widget.SimpleCursorAdapter;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.OutputStream;
-import java.util.List;
 import java.util.Random;
 
-public class MainActivity extends AppCompatActivity {
+public class AddLoginActivity extends AppCompatActivity {
 
     final private String TAG = "mt14033.PM.MainAct";
     final private String PASSWORD_MANAGER_PREF = "PASSWORD_MANAGER";
@@ -42,8 +30,6 @@ public class MainActivity extends AppCompatActivity {
     private Button generatePasswordButton;
     private Button savePasswordButton;
     private Button savePreferredPasswordLengthButton;
-    private Button backupButton;
-    private Button passwordListButton;
 
     private int get_preferred_password_length() {
         Log.d(TAG, "in RestorePreferencePasswordLength");
@@ -73,21 +59,19 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         Log.d(TAG, "Inside OnCreate");
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_add_login);
 
         final EditText passwordLength = (EditText) findViewById(R.id.password_length);
-        final EditText passwordUrl = (EditText) findViewById(R.id.password_url);
+        final EditText passwordUrl = (EditText) findViewById(R.id.add_login_url);
         final TextView generatedPassword = (TextView) findViewById(R.id.generated_password);
-        final Button generatePasswordButton = (Button) findViewById(R.id.generate_password_button);
+        final ImageButton generatePasswordButton = (ImageButton) findViewById(R.id.generate_password_button);
         final Button savePasswordButton = (Button) findViewById(R.id.save_generated_password_button);
         final Button saveLengthPreferenceButton = (Button) findViewById(R.id.save_preferred_password_length_button);
-        final Button backupButton = (Button) findViewById(R.id.backup_button);
-        final Button passwordListButton = (Button) findViewById(R.id.password_list_button);
 
 
         generatePasswordButton.setEnabled(true);
         saveLengthPreferenceButton.setEnabled(true);
-        backupButton.setEnabled(true);
+
         savePasswordButton.setEnabled(false);
 
         int preferred_password_length = get_preferred_password_length();
@@ -97,14 +81,6 @@ public class MainActivity extends AppCompatActivity {
 
         final DBHelper dbh = new DBHelper(this);
 
-        passwordListButton.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View view) {
-                Log.d(TAG, "in passwordListButton");
-                Intent list_password = new Intent(getApplicationContext(),ListPassword.class);
-                startActivity(list_password);
-            }
-        });
         saveLengthPreferenceButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -125,15 +101,15 @@ public class MainActivity extends AppCompatActivity {
         generatePasswordButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.d(TAG, "in generatePasswordButton");
-
-                int length = Integer.parseInt(passwordLength.getText().toString());
-                Log.d(TAG, "Length:"+ String.valueOf(length));
-                String password = generate_password(length);
-                Log.d(TAG, "Password:"+ password);
-
-                generatedPassword.setText(password);
-                savePasswordButton.setEnabled(true);
+//                Log.d(TAG, "in generatePasswordButton");
+//
+//                int length = Integer.parseInt(passwordLength.getText().toString());
+//                Log.d(TAG, "Length:"+ String.valueOf(length));
+//                String password = generate_password(length);
+//                Log.d(TAG, "Password:"+ password);
+//
+//                generatedPassword.setText(password);
+//                savePasswordButton.setEnabled(true);
             }
         });
 
@@ -171,60 +147,7 @@ public class MainActivity extends AppCompatActivity {
 
         });
 
-        backupButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Log.d(TAG, "in backupButton");
-                final String inFileName = "/data/data/in.ac.iiitd.mt14033.passwordmanager/databases/"+DATABASE_NAME;
-                File dbFile = new File(inFileName);
-                FileInputStream fis;
-                OutputStream output;
-                try {
-                    fis = new FileInputStream(dbFile);
-                } catch (FileNotFoundException e) {
-                    Log.d(TAG,"DB File not found during backup.");
-                    Toast toast = Toast.makeText(getApplicationContext(), "DB file not found in location", Toast.LENGTH_SHORT);
-                    toast.show();
-                    return;
-                }
 
-                String outFileName = Environment.getExternalStorageDirectory()+"/"+DATABASE_NAME;
-                Log.d(TAG, "DB outFileName: "+outFileName);
-
-                // Open the empty db as the output stream
-                try {
-                    output = new FileOutputStream(outFileName);
-                } catch (FileNotFoundException e) {
-                    Log.d(TAG,"Cannot create db file for backup at external location."+e.toString());
-                    Toast toast = Toast.makeText(getApplicationContext(), "Cannot create db file for backup at external location."+e.toString(), Toast.LENGTH_SHORT);
-                    toast.show();
-                    return;
-                }
-
-                // Transfer bytes from the inputfile to the outputfile
-                byte[] buffer = new byte[1024];
-                int length;
-                try {
-                    while ((length = fis.read(buffer))>0){
-                        output.write(buffer, 0, length);
-                    }
-
-                    // Close the streams
-                    output.flush();
-                    output.close();
-                    fis.close();
-                    Toast toast = Toast.makeText(getApplicationContext(), "Backup taken successfully.", Toast.LENGTH_SHORT);
-                    toast.show();
-                } catch (java.io.IOException e) {
-                    Log.d(TAG,"Error: "+e.toString());
-                    Toast toast = Toast.makeText(getApplicationContext(), "Error: "+e.toString(), Toast.LENGTH_SHORT);
-                    toast.show();
-                    return;
-                }
-                backupButton.setEnabled(true);
-            }
-
-        });
     }
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -235,8 +158,6 @@ public class MainActivity extends AppCompatActivity {
     public void onSaveInstanceState(Bundle savedInstanceState) {
         Log.d(TAG, "Inside OnSaveInstanceState");
         super.onSaveInstanceState(savedInstanceState);
-
-        // code to save data
     }
 
     @Override

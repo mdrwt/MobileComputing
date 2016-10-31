@@ -2,16 +2,9 @@ package in.ac.iiitd.mt14033.passwordmanager;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
-import android.view.View;
-import android.content.Intent;
-import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
-import android.view.Menu;
-import android.view.MenuItem;
+import android.util.Log;
 import android.view.View;
 
 import java.util.ArrayList;
@@ -46,8 +39,8 @@ public class MatchingLoginsDialogActivity extends AppCompatActivity  implements 
         }
     }
 
-    public void fillButtonTapped(View view) {
-        Log.v(getString(R.string.VTAG), "fillButtonTapped");
+    public void addLoginButtonTapped(View view) {
+        Log.v(getString(R.string.VTAG), "addLoginButtonTapped");
         finish();
     }
 

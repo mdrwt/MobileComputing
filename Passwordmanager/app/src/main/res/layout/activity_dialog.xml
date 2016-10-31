@@ -9,7 +9,7 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:contentDescription="loginsavepasswordpopup"
-    tools:context=".MainActivity" >
+    tools:context=".AddLoginActivity" >
 
     <Button
         android:id="@+id/login_never_btn_id"

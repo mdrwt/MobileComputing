@@ -372,7 +372,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             showProgress(false);
             Log.d(TAG, "in onPostExecute.");
             if (success) {
-                Intent myIntent2 = new Intent(LoginActivity.this, MainActivity.class);
+                Intent myIntent2 = new Intent(LoginActivity.this, AddLoginActivity.class);
                 myIntent2.putExtra("mEmail", mEmail);
                 startActivity(myIntent2);
             } else {

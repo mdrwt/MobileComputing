@@ -1,13 +1,13 @@
 package in.ac.iiitd.mt14033.passwordmanager;
-import android.content.res.Resources;
 import android.support.v7.widget.RecyclerView;
-
-import in.ac.iiitd.mt14033.passwordmanager.model.MatchingLogin;
-import java.util.ArrayList;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import java.util.ArrayList;
+
+import in.ac.iiitd.mt14033.passwordmanager.model.MatchingLogin;
 /**
  * Created by madhur rawat on 10/25/16.
  */
@@ -20,7 +20,7 @@ public class MatchingLoginsAdapter  extends RecyclerView.Adapter<RecyclerView.Vi
     public MatchingLoginsAdapter(ArrayList<MatchingLogin> matchLogins, OnItemClickListener listener) {
         matchingLogins=matchLogins;
         mListener = listener;
-        Log.i(Resources.getSystem().getString(R.string.VTAG), "came here.................................3."+mListener);
+//        Log.i(Resources.getSystem().getString(R.string.VTAG), "came here.................................3."+mListener);
     }
 
     /**

@@ -3,15 +3,15 @@ package in.ac.iiitd.mt14033.passwordmanager;
 import android.accessibilityservice.AccessibilityService;
 import android.accessibilityservice.AccessibilityServiceInfo;
 import android.content.Intent;
-import android.nfc.Tag;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.accessibility.AccessibilityEvent;
 import android.view.accessibility.AccessibilityNodeInfo;
 
+import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
+
 public class MyAccessibilityService extends AccessibilityService {
 
-    static final String TAG = "MyAccessibilityService";
+//    static final String TAG = "MyAccessibilityService";
     private static final String TASK_LIST_VIEW_CLASS_NAME =
             "in.ac.iiitd.mt14033.passwordmanager.MyAccessibilityService";
     private AccessibilityEvent oldAccessibilityEvent;
@@ -68,55 +68,40 @@ public class MyAccessibilityService extends AccessibilityService {
         else {
             AccessibilityNodeInfo source  = event.getSource();
             AccessibilityNodeInfo parent = source.getParent();
-            Log.v(TAG, getEventType(event)+" "+event.getClassName());
-            if(event.getPackageName().equals("in.ac.iiitd.mt14033.passwordmanager") &&
+            /**
+             * Detect popup from our app and respective button pushes within it.
+             */
+
+            if(event.getPackageName().equals(getString(R.string.selfpackagename)) &&
                     event.getClassName().equals("android.widget.Button") &&
                     event.getEventType()==AccessibilityEvent.TYPE_VIEW_CLICKED) {
-                if(source.getParent().getContentDescription().equals("loginsavepasswordpopup")) {
+                Log.v(getString(R.string.VTAG), event.getPackageName()+" "+getEventType(event)+" "+event.getClassName());
+                if(source.getParent().getContentDescription().equals("matchingpasswordpopup")) {
+                    if(source.getText().equals(getString(R.string.add_login_button_text))) {
+                        Log.v(getString(R.string.VTAG), "add_login_button_text");
+                        Intent intent = new Intent(this, AddLoginActivity.class);
+                        intent.setFlags(FLAG_ACTIVITY_NEW_TASK);
+                        startActivity(intent);
 
-                    if(source.getText().equals("Save")) {
-                        loginSavePasswordTapped();
                     }
-                    else if(source.getText().equals("Later")) {
-                        loginLaterPasswordTapped();
-                    }
-                    else if(source.getText().equals("Never")) {
-                        loginNeverPasswordTapped();
-                    }
-                }
-                else if(source.getParent().getContentDescription().equals("loginfillpasswordpopup")) {
-
-                    if(source.getText().equals("Fill")) {
-                        loginShouldFillPassword=true;
-                    }
-                    else if(source.getText().equals("Cancel")) {
-
+                    else if(source.getText().equals(getString(R.string.cancel_button_text))) {
+                        Log.v(getString(R.string.VTAG), "cancel button tapped");
                     }
                 }
-
-
             }
-
             /**
-             * Check with package name in app if credentials are saved. If credentials are saved then
-             * show credentials in list to choose from.
+             * Check if field is password and packagename is not own apps.
+             * If no text is filled in then show possible matching logins to choose and
+             * option to add new login.
              */
-            else if(event.isPassword()) {
-                Log.v(TAG, "Event is password");
+            else if(event.isPassword() && !event.getPackageName().equals(getString(R.string.selfpackagename))) {
+                Log.v(getString(R.string.VTAG), "Event is password");
                 String curr_package = event.getPackageName().toString();
-
                 Intent intent = new Intent(this, MatchingLoginsDialogActivity.class);
                 intent.putExtra(getString(R.string.matching_login_package_name), curr_package);
+                intent.addFlags(FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
-
             }
-
-
-
-
-
-
-
         }
 
 
@@ -281,13 +266,13 @@ public class MyAccessibilityService extends AccessibilityService {
 
     @Override
     public void onInterrupt() {
-        Log.v(TAG, "onInterrupt");
+        Log.v(getString(R.string.VTAG), "onInterrupt");
     }
 
     @Override
     protected void onServiceConnected() {
         super.onServiceConnected();
-        Log.v(TAG, "onServiceConnected");
+        Log.v(getString(R.string.VTAG), "onServiceConnected");
         if(dbh==null)
             dbh=new DBHelper(this);
         AccessibilityServiceInfo info = new AccessibilityServiceInfo();
@@ -300,7 +285,7 @@ public class MyAccessibilityService extends AccessibilityService {
 
     public void loginSavePasswordTapped() {
 
-        Log.v(TAG, "came here");
+        Log.v(getString(R.string.VTAG), "came here");
         loginShouldSave=true;
     }
     public void loginLaterPasswordTapped() {
