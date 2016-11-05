@@ -14,7 +14,7 @@
     <string name="load">Reload</string>
     <string name="update">Edit</string>
     <string name="delete">Delete</string>
-    <string name="save">Save</string>
+
     <string name="accessibility_service_description">AccessibilityService</string>
     <!-- Strings related to login -->
     <string name="prompt_email">Email</string>
@@ -28,16 +28,24 @@
     <string name="permission_rationale">"Contacts permissions are needed for providing email
         completions."
     </string>
-    <string name="title_activity_get_password_dialog"></string>
-    <string name="cancel_button_text">Cancel</string>>
-
-    <string name="matching_login_package_name">MatchingLoginsPackageName</string>
-    <string name="matching_logins">Matching Logins</string>
-
-    <string name="add_login_button_text">Add Login</string>>
 
     <!--General-->
     <string name="selfpackagename">in.ac.iiitd.mt14033.passwordmanager</string>
     <string name="VTAG">PasswordManagerVerbose</string>
+    <string name="PREFFERED_PASSWORD_LENGTH">Preferred_Password_Length</string>
+    <string name="save">Save</string>
+    <string name="cancel">Cancel</string>
+    <string name="close">Close</string>
+    <string name="ERROR_INVALID_URL">Invalid URL</string>
 
+    <!--Dialog Generate Password-->
+    <string name="dialog_genpass_title">Generate Password</string>
+    <string name="dialog_genpass_hint_generated">GeneratedPass</string>
+    <string name="dialog_genpass_hint_passlen">Password Length: </string>
+
+    <!--Dialog Matching Logins-->
+    <string name="dialog_matching_title">Matching Logins</string>
+    <string name="add_login_button_text">Add Login</string>
+    <string name="matching_login_package_name">MatchingLoginsPackageName</string>
+    <string name="matching_logins">Matching Logins</string>
 </resources>

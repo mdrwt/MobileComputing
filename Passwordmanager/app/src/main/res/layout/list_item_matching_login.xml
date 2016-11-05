@@ -1,51 +1,35 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="?android:attr/listPreferredItemHeight"
     android:padding="6dip"
+    android:orientation="vertical"
     android:background="#9ef28f">
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:orientation="vertical"
-        android:background="@color/dim_foreground_disabled_material_dark"
         android:layout_alignParentBottom="true"
         android:id="@+id/linearLayout" />
 
     <TextView
         android:id="@+id/nameTV"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignWithParentIfMissing="true"
+        android:layout_height="match_parent"
         android:gravity="center_vertical"
         android:textColor="@android:color/black"
-        android:text="Example application"
-        android:textSize="20sp"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true" />
+        android:layout_weight="1"
+        android:text="Matching Name"
+        android:textSize="14sp" />
 
     <TextView
-        android:id="@+id/currsemTV"
+        android:id="@+id/packagenameTV"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:ellipsize="marquee"
-        android:singleLine="true"
         android:textColor="@android:color/black"
-        android:text="Description"
-        android:textSize="16sp"
-        android:layout_above="@+id/linearLayout"
-        android:layout_alignParentStart="true" />
+        android:layout_weight="1"
+        android:text="URL Name"
+        android:textSize="12sp" />
 
-    <TextView
-        android:id="@+id/rollnoTV"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignWithParentIfMissing="true"
-        android:gravity="center_vertical"
-        android:textColor="@android:color/black"
-        android:text="Example application"
-        android:textSize="20sp"
-        android:layout_alignTop="@+id/nameTV"
-        android:layout_alignParentRight="true"/>
-
-</RelativeLayout>
+</LinearLayout>

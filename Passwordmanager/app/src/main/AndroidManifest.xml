@@ -25,12 +25,6 @@
         </activity>
         <activity android:name=".ListPassword" />
         <activity android:name=".EditPasswordActivity" />
-        <activity
-            android:name=".SavePasswordDialogActivity"
-            android:excludeFromRecents="true"
-            android:launchMode="singleInstance"
-            android:taskAffinity=""
-            android:theme="@style/Theme.AppCompat.Dialog" />
 
         <service
             android:name=".MyAccessibilityService"
@@ -49,11 +43,12 @@
 
         <activity
             android:name=".MatchingLoginsDialogActivity"
-            android:label="@string/title_activity_get_password_dialog"
             android:excludeFromRecents="true"
+            android:label="@string/dialog_matching_title"
             android:launchMode="singleInstance"
             android:taskAffinity=""
-            android:theme="@style/Theme.AppCompat.Dialog"/>
+            android:theme="@style/Theme.AppCompat.Dialog" />
+
     </application>
 
 </manifest>

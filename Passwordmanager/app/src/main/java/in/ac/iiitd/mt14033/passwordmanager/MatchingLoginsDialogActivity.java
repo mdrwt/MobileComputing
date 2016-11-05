@@ -37,6 +37,7 @@ public class MatchingLoginsDialogActivity extends AppCompatActivity  implements 
         if(packagename.length()==0) {
             Log.v(getString(R.string.VTAG), "Package name is null");
         }
+        this.setFinishOnTouchOutside(false);
     }
 
     public void addLoginButtonTapped(View view) {

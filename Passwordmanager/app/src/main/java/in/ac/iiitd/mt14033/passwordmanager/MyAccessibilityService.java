@@ -11,15 +11,11 @@ import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
 
 public class MyAccessibilityService extends AccessibilityService {
 
-//    static final String TAG = "MyAccessibilityService";
     private static final String TASK_LIST_VIEW_CLASS_NAME =
             "in.ac.iiitd.mt14033.passwordmanager.MyAccessibilityService";
-    private AccessibilityEvent oldAccessibilityEvent;
-    private AccessibilityNodeInfo loginUsernameField;
+    private String requesting_package=null;
 
     public DBHelper dbh=null;
-    private boolean loginShouldSave=false;
-    private boolean loginShouldFillPassword=false;
 
     private String getEventType(AccessibilityEvent event) {
         switch (event.getEventType()) {
@@ -76,15 +72,18 @@ public class MyAccessibilityService extends AccessibilityService {
                     event.getClassName().equals("android.widget.Button") &&
                     event.getEventType()==AccessibilityEvent.TYPE_VIEW_CLICKED) {
                 Log.v(getString(R.string.VTAG), event.getPackageName()+" "+getEventType(event)+" "+event.getClassName());
+                if(source.getParent()==null || source.getParent().getContentDescription()==null)
+                    return;
                 if(source.getParent().getContentDescription().equals("matchingpasswordpopup")) {
                     if(source.getText().equals(getString(R.string.add_login_button_text))) {
                         Log.v(getString(R.string.VTAG), "add_login_button_text");
                         Intent intent = new Intent(this, AddLoginActivity.class);
+                        intent.putExtra(getString(R.string.matching_login_package_name), requesting_package);
                         intent.setFlags(FLAG_ACTIVITY_NEW_TASK);
                         startActivity(intent);
 
                     }
-                    else if(source.getText().equals(getString(R.string.cancel_button_text))) {
+                    else if(source.getText().equals(getString(R.string.cancel))) {
                         Log.v(getString(R.string.VTAG), "cancel button tapped");
                     }
                 }
@@ -96,11 +95,15 @@ public class MyAccessibilityService extends AccessibilityService {
              */
             else if(event.isPassword() && !event.getPackageName().equals(getString(R.string.selfpackagename))) {
                 Log.v(getString(R.string.VTAG), "Event is password");
-                String curr_package = event.getPackageName().toString();
+
                 Intent intent = new Intent(this, MatchingLoginsDialogActivity.class);
-                intent.putExtra(getString(R.string.matching_login_package_name), curr_package);
+                requesting_package = event.getPackageName().toString();
+                intent.putExtra(getString(R.string.matching_login_package_name), requesting_package);
                 intent.addFlags(FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
+
+//                DialogMatchingLogins dialogMatchingLogins = new DialogMatchingLogins();
+//                dialogMatchingLogins.show(getSupportFragmentManager(), "matching_logins");
             }
         }
 
@@ -247,23 +250,6 @@ public class MyAccessibilityService extends AccessibilityService {
         return false;
     }
 
-    private AccessibilityNodeInfo getListItemNodeInfo(AccessibilityNodeInfo source) {
-        AccessibilityNodeInfo current = source;
-        while (true) {
-            AccessibilityNodeInfo parent = current.getParent();
-            if (parent == null) {
-                return null;
-            }
-            if (TASK_LIST_VIEW_CLASS_NAME.equals(parent.getClassName())) {
-                return current;
-            }
-            // NOTE: Recycle the infos.
-            AccessibilityNodeInfo oldCurrent = current;
-            current = parent;
-            oldCurrent.recycle();
-        }
-    }
-
     @Override
     public void onInterrupt() {
         Log.v(getString(R.string.VTAG), "onInterrupt");
@@ -283,16 +269,5 @@ public class MyAccessibilityService extends AccessibilityService {
         setServiceInfo(info);
     }
 
-    public void loginSavePasswordTapped() {
-
-        Log.v(getString(R.string.VTAG), "came here");
-        loginShouldSave=true;
-    }
-    public void loginLaterPasswordTapped() {
-
-    }
-    public void loginNeverPasswordTapped() {
-
-    }
 
 }

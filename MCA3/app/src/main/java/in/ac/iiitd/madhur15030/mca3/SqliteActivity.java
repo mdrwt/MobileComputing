@@ -34,6 +34,7 @@ public class SqliteActivity extends AppCompatActivity implements StudentRecordAd
         mLayoutManager = new LinearLayoutManager(this);
         studentRecordList.setLayoutManager(mLayoutManager);
         studentRecords = new ArrayList<>();
+//        mAdapter = new StudentRecordAdapter(studentRecords, this);
         mAdapter = new StudentRecordAdapter(studentRecords, this);
         studentRecordList.setAdapter(mAdapter);
 

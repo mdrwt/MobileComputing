@@ -36,9 +36,8 @@ public class MatchingLoginsAdapter  extends RecyclerView.Adapter<RecyclerView.Vi
             return;
         final MatchingLoginItemViewHolder itemHolder = (MatchingLoginItemViewHolder) holder;
 
-//        ((MatchingLoginItemViewHolder) holder).rollNo.setText((matchingLogins.get(position)).getRollno());
-//        ((MatchingLoginItemViewHolder) holder).nameTV.setText((matchingLogins.get(position)).getName());
-//        ((MatchingLoginItemViewHolder) holder).currsemTV.setText("Current Sem: "+(matchingLogins.get(position)).getCurrsem());
+        ((MatchingLoginItemViewHolder) holder).nameTV.setText((matchingLogins.get(position)).getUsername());
+        ((MatchingLoginItemViewHolder) holder).packagename.setText((matchingLogins.get(position)).getPackagename());
 
         itemHolder.rootView.setOnClickListener(new View.OnClickListener() {
             @Override
