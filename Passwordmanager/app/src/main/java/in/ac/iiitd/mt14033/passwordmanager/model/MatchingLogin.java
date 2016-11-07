@@ -5,14 +5,24 @@ package in.ac.iiitd.mt14033.passwordmanager.model;
  */
 
 public class MatchingLogin {
+    private String name;
     private String username;
     private String packagename;
     private String password;
 
-    public MatchingLogin(String username, String packagename, String password) {
+    public MatchingLogin(String password, String name, String username, String packagename) {
+        this.password = password;
+        this.name = name;
         this.username = username;
         this.packagename = packagename;
-        this.password = password;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getUsername() {

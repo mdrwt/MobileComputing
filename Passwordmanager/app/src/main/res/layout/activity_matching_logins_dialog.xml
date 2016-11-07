@@ -7,7 +7,7 @@
     android:layout_marginLeft="32dp"
     android:layout_marginRight="32dp"
     android:layout_marginBottom="16dp"
-    android:contentDescription="matchingpasswordpopup"
+    android:contentDescription="@string/matching_login_popup_content_description"
     android:weightSum="1">
     <TextView
         android:text="@string/dialog_matching_title"

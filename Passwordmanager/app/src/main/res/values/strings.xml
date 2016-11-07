@@ -44,6 +44,7 @@
     <string name="dialog_genpass_hint_passlen">Password Length: </string>
 
     <!--Dialog Matching Logins-->
+    <string name="matching_login_popup_content_description">matchingpasswordpopup</string>
     <string name="dialog_matching_title">Matching Logins</string>
     <string name="add_login_button_text">Add Login</string>
     <string name="matching_login_package_name">MatchingLoginsPackageName</string>

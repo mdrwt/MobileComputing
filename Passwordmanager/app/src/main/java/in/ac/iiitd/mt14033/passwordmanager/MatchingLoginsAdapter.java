@@ -20,7 +20,6 @@ public class MatchingLoginsAdapter  extends RecyclerView.Adapter<RecyclerView.Vi
     public MatchingLoginsAdapter(ArrayList<MatchingLogin> matchLogins, OnItemClickListener listener) {
         matchingLogins=matchLogins;
         mListener = listener;
-//        Log.i(Resources.getSystem().getString(R.string.VTAG), "came here.................................3."+mListener);
     }
 
     /**

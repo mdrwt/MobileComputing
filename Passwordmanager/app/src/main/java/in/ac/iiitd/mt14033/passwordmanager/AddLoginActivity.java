@@ -15,6 +15,7 @@ import android.widget.Toast;
 public class AddLoginActivity extends AppCompatActivity implements DialogGeneratePassword.DialogGeneratePasswordListner{
 
     private EditText urlET;
+    private EditText nameET;
     private EditText passwordET;
     private EditText usernameET;
     private Button saveLoginButton;
@@ -24,6 +25,7 @@ public class AddLoginActivity extends AppCompatActivity implements DialogGenerat
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_login);
 
+        nameET = (EditText) findViewById(R.id.add_login_name_et);
         urlET = (EditText) findViewById(R.id.add_login_url_et);
         passwordET = (EditText) findViewById(R.id.add_login_password_et);
         saveLoginButton = (Button) findViewById(R.id.add_login_save_login_btn);
@@ -45,8 +47,10 @@ public class AddLoginActivity extends AppCompatActivity implements DialogGenerat
 //                }
                 String password = passwordET.getText().toString();
                 String username = usernameET.getText().toString();
+                String name = nameET.getText().toString();
                 PasswordManager pm = new PasswordManager();
                 pm.setPassword(password);
+                pm.set_name(name);
                 pm.setUrl(url);
                 pm.setUserId(username);
                 dbh.addPassword(pm);

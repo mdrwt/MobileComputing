@@ -14,7 +14,7 @@ import android.widget.Toast;
 public class ListPassword extends AppCompatActivity {
 
     final String TAG = "mt14033.ListPass";
-    String[] fromColumns = {DBHelper.KEY_ID, DBHelper.KEY_USERID, DBHelper.KEY_URL, DBHelper.KEY_PASSWORD};
+    String[] fromColumns = {DBHelper.KEY_ID, DBHelper.KEY_USERNAME, DBHelper.KEY_NAME, DBHelper.KEY_URL, DBHelper.KEY_PASSWORD};
     int[] toViews = {R.id.id, R.id.user_id, R.id.url, R.id.password};
 
     @Override

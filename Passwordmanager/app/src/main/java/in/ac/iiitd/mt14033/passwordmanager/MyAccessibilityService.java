@@ -3,17 +3,24 @@ package in.ac.iiitd.mt14033.passwordmanager;
 import android.accessibilityservice.AccessibilityService;
 import android.accessibilityservice.AccessibilityServiceInfo;
 import android.content.Intent;
+import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.accessibility.AccessibilityEvent;
 import android.view.accessibility.AccessibilityNodeInfo;
+
+import in.ac.iiitd.mt14033.passwordmanager.model.MatchingLogin;
 
 import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
 
 public class MyAccessibilityService extends AccessibilityService {
 
-    private static final String TASK_LIST_VIEW_CLASS_NAME =
-            "in.ac.iiitd.mt14033.passwordmanager.MyAccessibilityService";
     private String requesting_package=null;
+    private int requesting_password_et_hash;
+
+    private MatchingLogin selectedMatchingLogin=null;
+
+    private static MyAccessibilityService myAccessibilityServiceInstance;
 
     public DBHelper dbh=null;
 
@@ -67,14 +74,14 @@ public class MyAccessibilityService extends AccessibilityService {
             /**
              * Detect popup from our app and respective button pushes within it.
              */
-
+            Log.v(getString(R.string.VTAG), event.getPackageName()+" "+getEventType(event)+" "+event.getClassName());
             if(event.getPackageName().equals(getString(R.string.selfpackagename)) &&
                     event.getClassName().equals("android.widget.Button") &&
                     event.getEventType()==AccessibilityEvent.TYPE_VIEW_CLICKED) {
                 Log.v(getString(R.string.VTAG), event.getPackageName()+" "+getEventType(event)+" "+event.getClassName());
                 if(source.getParent()==null || source.getParent().getContentDescription()==null)
                     return;
-                if(source.getParent().getContentDescription().equals("matchingpasswordpopup")) {
+                if(source.getParent().getContentDescription().equals(getString(R.string.matching_login_popup_content_description))) {
                     if(source.getText().equals(getString(R.string.add_login_button_text))) {
                         Log.v(getString(R.string.VTAG), "add_login_button_text");
                         Intent intent = new Intent(this, AddLoginActivity.class);
@@ -93,45 +100,46 @@ public class MyAccessibilityService extends AccessibilityService {
              * If no text is filled in then show possible matching logins to choose and
              * option to add new login.
              */
-            else if(event.isPassword() && !event.getPackageName().equals(getString(R.string.selfpackagename))) {
-                Log.v(getString(R.string.VTAG), "Event is password");
-
+            else if(event.isPassword() &&
+                    !event.getPackageName().equals(getString(R.string.selfpackagename)) &&
+                    event.getClassName().equals("android.widget.EditText") &&
+                    event.getEventType()==AccessibilityEvent.TYPE_VIEW_CLICKED) {
+                Log.v(getString(R.string.VTAG), event.getPackageName()+" "+getEventType(event)+" "+event.getClassName());
                 Intent intent = new Intent(this, MatchingLoginsDialogActivity.class);
                 requesting_package = event.getPackageName().toString();
+                requesting_password_et_hash = source.hashCode();
                 intent.putExtra(getString(R.string.matching_login_package_name), requesting_package);
                 intent.addFlags(FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
+            }
+            else if(event.getPackageName().equals(requesting_package) &&
+                    event.getEventType()==AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED) {
+                if(requesting_package!=null && selectedMatchingLogin!=null) {
+                    Log.v(getString(R.string.VTAG), event.getPackageName()+" "+getEventType(event)+" "+event.getClassName());
 
-//                DialogMatchingLogins dialogMatchingLogins = new DialogMatchingLogins();
-//                dialogMatchingLogins.show(getSupportFragmentManager(), "matching_logins");
+                    AccessibilityNodeInfo passwordField = getPasswordField(source);
+                    /**
+                     * set the password in the password field.
+                     */
+                    Bundle arguments = new Bundle();
+                    arguments.putCharSequence(AccessibilityNodeInfo
+                                    .ACTION_ARGUMENT_SET_TEXT_CHARSEQUENCE,
+                            selectedMatchingLogin.getPassword());
+                    passwordField.performAction(AccessibilityNodeInfo.ACTION_SET_TEXT, arguments);
+                    AccessibilityNodeInfo prev = getPrevEditText(passwordField);
+                    /**
+                     * set the is username in the username field.
+                     */
+                    Bundle newBundle = new Bundle();
+                    newBundle.putCharSequence(AccessibilityNodeInfo.ACTION_ARGUMENT_SET_TEXT_CHARSEQUENCE,
+                            selectedMatchingLogin.getUsername());
+                    prev.performAction(AccessibilityNodeInfo.ACTION_SET_TEXT, newBundle);
+
+                    Log.v(getString(R.string.VTAG), "selected match "+ selectedMatchingLogin.toString());
+                }
             }
         }
-
-
     }
-    public boolean showSaveCredentialPopup(AccessibilityNodeInfo nodeInfo) {
-        String username = nodeInfo.getText().toString();
-        String packagename = nodeInfo.getPackageName().toString();
-//        PasswordManager pm new PasswordManager()
-        return false;
-    }
-
-    public boolean isPasswordSaveAllowed(AccessibilityNodeInfo nodeInfo) {
-        String username = nodeInfo.getText().toString();
-        String packagename = nodeInfo.getPackageName().toString();
-        int allowed = dbh.isPasswordSaveAllowed(username, packagename);
-
-        return (allowed!=0);
-    }
-
-    public boolean hasSavedPassword(AccessibilityNodeInfo nodeInfo) {
-        String username = nodeInfo.getText().toString();
-        String packagename = nodeInfo.getPackageName().toString();
-        PasswordManager pm = dbh.getPasswordForUsernameAndPackage(username, packagename);
-        return pm != null;
-
-    }
-
     public boolean isUsernameField(String text) {
         String ltext = text.toLowerCase();
         if(ltext.contains("email")) {
@@ -169,32 +177,47 @@ public class MyAccessibilityService extends AccessibilityService {
         }
         return null;
     }
-    public AccessibilityNodeInfo getPasswordField(AccessibilityNodeInfo source) {
+    public AccessibilityNodeInfo getPrevEditText(AccessibilityNodeInfo source) {
+        AccessibilityNodeInfo parent = source.getParent();
+        if(parent==null) {
+            return null;
+        }
+        int nchild = parent.getChildCount();
+        if (nchild<2)
+            return null;
+        for (int i=0; i<nchild; ++i) {
+            AccessibilityNodeInfo child = parent.getChild(i);
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.JELLY_BEAN_MR2) {
+                if(child.isPassword()) {
+                    if(i>0) {
+                        return parent.getChild(i-1);
+                    }
+                    else {
+                        return null;
+                    }
+                }
+            }
+        }
+        return null;
+    }
 
+    /**
+     * Searches for edittext field of type password in the child heirarchy and returns it.
+     * @param source
+     * @return password type field.
+     */
+    public AccessibilityNodeInfo getPasswordField(AccessibilityNodeInfo source) {
+        if (source.isPassword())
+            return source;
         int nchild = source.getChildCount();
         for (int i=0; i<nchild; ++i) {
             AccessibilityNodeInfo child = source.getChild(i);
             if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.JELLY_BEAN_MR2) {
-                CharSequence textchar = child.getText();
-                CharSequence descchar = child.getContentDescription();
-                String text = null;
+
                 if(child.isPassword()) {
                     return child;
                 }
-                if (textchar != null) {
-                    text = textchar.toString();
-                    if (isPasswordField(text)) {
-                        return child;
-                    }
-                }
-                if(descchar!=null) {
-                    String desc = descchar.toString();
-                    if(isPasswordField(desc)) {
-                        return child;
-                    }
-                }
-
-                AccessibilityNodeInfo field =  getUserNameField(child);
+                AccessibilityNodeInfo field =  getPasswordField(child);
                 if(field!=null) return field;
 
             }
@@ -250,6 +273,7 @@ public class MyAccessibilityService extends AccessibilityService {
         return false;
     }
 
+
     @Override
     public void onInterrupt() {
         Log.v(getString(R.string.VTAG), "onInterrupt");
@@ -259,6 +283,7 @@ public class MyAccessibilityService extends AccessibilityService {
     protected void onServiceConnected() {
         super.onServiceConnected();
         Log.v(getString(R.string.VTAG), "onServiceConnected");
+        myAccessibilityServiceInstance = this;
         if(dbh==null)
             dbh=new DBHelper(this);
         AccessibilityServiceInfo info = new AccessibilityServiceInfo();
@@ -268,6 +293,18 @@ public class MyAccessibilityService extends AccessibilityService {
 
         setServiceInfo(info);
     }
+    @Override
+    public boolean onUnbind(Intent intent) {
+        myAccessibilityServiceInstance = null;
+        return super.onUnbind(intent);
+    }
+    @Nullable
+    public static MyAccessibilityService getInstance(){
+        return myAccessibilityServiceInstance;
+    }
 
+    public void onSelectMatchingLogin(MatchingLogin matchingLogin) {
+        selectedMatchingLogin = matchingLogin;
+    }
 
 }

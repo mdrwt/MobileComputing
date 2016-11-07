@@ -52,8 +52,15 @@ public class MatchingLoginsDialogActivity extends AppCompatActivity  implements 
 
     @Override
     public void onClickMatchingLogin(View view, int position) {
-        MatchingLogin record = ((MatchingLoginsAdapter)mAdapter).getItem(position);
-
+        MatchingLogin matchingLogin = ((MatchingLoginsAdapter)mAdapter).getItem(position);
+        MyAccessibilityService accessibilityService = MyAccessibilityService.getInstance();
+        if(accessibilityService!=null) {
+            accessibilityService.onSelectMatchingLogin(matchingLogin);
+        }
+        else {
+            Log.v(getString(R.string.VTAG), "Error. Accessibility Service not avaialble");
+        }
+        finish();
     }
     @Override
     protected void onResume() {
@@ -65,6 +72,8 @@ public class MatchingLoginsDialogActivity extends AppCompatActivity  implements 
         }
         MatchingLoginsAdapter adapter = (MatchingLoginsAdapter)matchingLoginsList.getAdapter();
         adapter.updateData(matchingLogins);
+
+
     }
 
 }

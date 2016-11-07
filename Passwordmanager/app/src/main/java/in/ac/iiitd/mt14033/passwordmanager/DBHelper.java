@@ -8,7 +8,6 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import in.ac.iiitd.mt14033.passwordmanager.model.MatchingLogin;
 
@@ -31,7 +30,8 @@ public class DBHelper extends SQLiteOpenHelper {
 
     // Passwords Table Columns names
     protected static final String KEY_ID = "_id";
-    protected static final String KEY_USERID = "userid";
+    protected static final String KEY_NAME = "name";
+    protected static final String KEY_USERNAME = "username";
     protected static final String KEY_URL = "url";
     protected static final String KEY_PASSWORD = "password";
     protected static final String KEY_SAVE_ALLOWED = "saveallowed";
@@ -44,7 +44,7 @@ public class DBHelper extends SQLiteOpenHelper {
     // Creating Tables
     @Override
     public void onCreate(SQLiteDatabase db) {
-        String CREATE_PASSWORD_TABLE = "CREATE TABLE " + TABLE_PASSWORDS + "( " + KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," + KEY_USERID + " TEXT," + KEY_URL + " TEXT," + KEY_PASSWORD + " TEXT,"+KEY_SAVE_ALLOWED+" INTEGER)";
+        String CREATE_PASSWORD_TABLE = "CREATE TABLE " + TABLE_PASSWORDS + "( " + KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," + KEY_USERNAME + " TEXT,"+ KEY_NAME + " TEXT," + KEY_URL + " TEXT," + KEY_PASSWORD + " TEXT,"+KEY_SAVE_ALLOWED+" INTEGER)";
         db.execSQL(CREATE_PASSWORD_TABLE);
     }
 
@@ -68,7 +68,8 @@ public class DBHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
-        values.put(KEY_USERID, pm.getUserId());
+        values.put(KEY_USERNAME, pm.getUserId());
+        values.put(KEY_NAME, pm.get_name());
         values.put(KEY_URL, pm.getUrl());
         values.put(KEY_PASSWORD, pm.getPassword());
         values.put(KEY_SAVE_ALLOWED, 1); // if adding password assuming that wants to save password
@@ -84,25 +85,21 @@ public class DBHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getReadableDatabase();
 
         Cursor cursor = db.query(TABLE_PASSWORDS, new String[] { KEY_ID,
-                        KEY_USERID, KEY_URL, KEY_PASSWORD, KEY_SAVE_ALLOWED }, KEY_ID + "=?",
+                        KEY_USERNAME, KEY_NAME, KEY_URL, KEY_PASSWORD, KEY_SAVE_ALLOWED }, KEY_ID + "=?",
                 new String[] { String.valueOf(id) }, null, null, null, null);
         if (cursor != null)
             cursor.moveToFirst();
 
         PasswordManager pm = new PasswordManager(Integer.parseInt(cursor.getString(0)),
-                cursor.getString(1), cursor.getString(2), cursor.getString(3));
-
-        Log.d(TAG,"UserId1: "+pm.getUserId());
-        Log.d(TAG,"Url1: "+pm.getUrl());
-        Log.d(TAG,"Password1: "+pm.getPassword());
+                cursor.getString(1), cursor.getString(2), cursor.getString(3), cursor.getString(4));
         return pm;
     }
 
     PasswordManager getPasswordForUsernameAndPackage(String username, String packagename) {
         SQLiteDatabase db = this.getReadableDatabase();
 
-        String[] projection = new String[] { KEY_ID, KEY_USERID, KEY_URL, KEY_PASSWORD, KEY_SAVE_ALLOWED};
-        String where = KEY_USERID+"=\""+username+"\" AND "
+        String[] projection = new String[] { KEY_ID, KEY_USERNAME, KEY_NAME, KEY_URL, KEY_PASSWORD, KEY_SAVE_ALLOWED};
+        String where = KEY_USERNAME+"=\""+username+"\" AND "
                 + KEY_URL+"=\""+packagename+"\"";
         Log.v(TAG, "where: "+where);
         Cursor cursor = db.query(
@@ -118,7 +115,7 @@ public class DBHelper extends SQLiteOpenHelper {
         else
             return null;
         PasswordManager pm = new PasswordManager(Integer.parseInt(cursor.getString(0)),
-                cursor.getString(1), cursor.getString(2), cursor.getString(3));
+                cursor.getString(1), cursor.getString(2), cursor.getString(3), cursor.getString(4));
 
         return pm;
     }
@@ -126,7 +123,7 @@ public class DBHelper extends SQLiteOpenHelper {
     ArrayList<MatchingLogin> getPasswordsForPackagename(String packagename) {
         SQLiteDatabase db = this.getReadableDatabase();
 
-        String[] projection = new String[] { KEY_ID, KEY_USERID, KEY_URL, KEY_PASSWORD, KEY_SAVE_ALLOWED};
+        String[] projection = new String[] { KEY_ID, KEY_USERNAME, KEY_NAME, KEY_URL, KEY_PASSWORD, KEY_SAVE_ALLOWED};
         String where = KEY_URL+"=\""+packagename+"\"";
         Log.v(TAG, "where: "+where);
         Cursor cursor = db.query(
@@ -144,12 +141,13 @@ public class DBHelper extends SQLiteOpenHelper {
             return matchingLogins;
         while(cursor.moveToNext()) {
             String username = cursor.getString(cursor.getColumnIndexOrThrow
-                    (KEY_USERID));
+                    (KEY_USERNAME));
+            String name = cursor.getString(cursor.getColumnIndexOrThrow(KEY_NAME));
             String password = cursor.getString(cursor.getColumnIndexOrThrow
                     (KEY_PASSWORD));
             String packname = cursor.getString(cursor.getColumnIndexOrThrow
                     (KEY_URL));
-            matchingLogins.add(new MatchingLogin(username, packname, password));
+            matchingLogins.add(new MatchingLogin(password, name, username, packname));
         }
         return  matchingLogins;
     }
@@ -157,8 +155,8 @@ public class DBHelper extends SQLiteOpenHelper {
     int isPasswordSaveAllowed(String username, String packagename) {
         SQLiteDatabase db = this.getReadableDatabase();
 
-        String[] projection = new String[] { KEY_ID, KEY_USERID, KEY_URL, KEY_PASSWORD, KEY_SAVE_ALLOWED};
-        String where = KEY_USERID+"=\""+username+"\" AND "
+        String[] projection = new String[] { KEY_ID, KEY_USERNAME, KEY_NAME, KEY_URL, KEY_PASSWORD, KEY_SAVE_ALLOWED};
+        String where = KEY_USERNAME+"=\""+username+"\" AND "
                 + KEY_URL+"=\""+packagename+"\"";
         Log.v(TAG, "where: "+where);
         Cursor cursor = db.query(
@@ -197,7 +195,7 @@ public class DBHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
-        values.put(KEY_USERID, pm.getUserId());
+        values.put(KEY_USERNAME, pm.getUserId());
         values.put(KEY_URL, pm.getUrl());
         values.put(KEY_PASSWORD, pm.getPassword());
 
