@@ -2,11 +2,14 @@ package in.ac.iiitd.mt14033.passwordmanager;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import in.ac.iiitd.mt14033.passwordmanager.model.PasswordManager;
 
 public class EditPasswordActivity extends AppCompatActivity {
 
@@ -21,6 +24,11 @@ public class EditPasswordActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_password);
+
+        //retrieve the action toolbar (status bar)
+        Toolbar apptoolbar = (Toolbar) findViewById(R.id.editPassword_toolbar);
+        setSupportActionBar(apptoolbar);
+        getSupportActionBar().setTitle(getResources().getString(R.string.editPassword_toolbar_title));
 
         final EditText id = (EditText) findViewById(R.id.id1);
         final EditText user_id = (EditText) findViewById(R.id.user_id);

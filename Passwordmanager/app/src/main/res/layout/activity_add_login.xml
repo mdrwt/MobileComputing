@@ -1,99 +1,116 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:gravity="center_horizontal"
-    android:orientation="vertical"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="4dp"
-    android:paddingRight="4dp"
-    android:paddingTop="@dimen/activity_vertical_margin">
-
-    <RelativeLayout
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical" >
+    <android.support.v7.widget.Toolbar
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/generatePassword_toolbar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <TextView
-            android:text="@string/name"
-            android:layout_width="match_parent"
-            android:id="@+id/add_login_name_tv"
-            android:layout_height="wrap_content" />
-        <EditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/add_login_name_tv"
-            android:inputType="textUri"
-            android:id="@+id/add_login_name_et"/>
-        <TextView
-            android:text="@string/password_url"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:id="@+id/add_login_url_tv"
-            android:layout_below="@+id/add_login_name_et"/>
-
-        <EditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="textUri"
-            android:layout_below="@+id/add_login_url_tv"
-            android:id="@+id/add_login_url_et"/>
-        <TextView
-            android:text="@string/username"
-            android:id="@+id/add_login_username_tv"
-            android:layout_width="wrap_content"
-            android:layout_below="@+id/add_login_url_et"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:layout_column="1" />
-        <EditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="text"
-            android:layout_below="@+id/add_login_username_tv"
-            android:id="@+id/add_login_username_et"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/add_login_password_tv"
-            android:layout_marginTop="4dp"
-            android:text="@string/generated_password"
-            android:layout_below="@+id/add_login_username_et" />
+        android:layout_height="wrap_content"
+        android:minHeight="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
+    <ScrollView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:paddingBottom="@dimen/activity_vertical_margin"
+        android:paddingLeft="4dp"
+        android:paddingRight="4dp"
+        android:paddingTop="@dimen/activity_vertical_margin">
 
         <LinearLayout
-            android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:id="@+id/add_login_password_et_layout"
-            android:layout_below="@+id/add_login_password_tv"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:padding="20dp"
+            android:orientation="vertical">
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
-            <EditText
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/add_login_name_et"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/name"
+                    android:inputType="textUri"
+                    android:maxLines="1"/>
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/add_login_password_et"
-                android:inputType="textPassword"
-                android:layout_weight="1" />
-
-            <ImageButton
-                android:layout_width="wrap_content"
+                android:layout_marginTop="8dp">
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/add_login_url_et"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/password_url"
+                    android:inputType="textUri"
+                    android:maxLines="1"/>
+            </android.support.design.widget.TextInputLayout>
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:src="@drawable/next"
-                android:background="@null"
-                android:onClick="generatePasswordTapped"
-                android:id="@+id/add_login_generate_password_btn"
-                android:layout_weight="1" />
+                android:layout_marginTop="8dp">
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/add_login_username_et"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/username"
+                    android:inputType="textUri"
+                    android:maxLines="1"/>
+            </android.support.design.widget.TextInputLayout>
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:id="@+id/add_login_password_et_layout"
+                android:layout_height="match_parent"
+                android:layout_marginTop="8dp">
+
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="255dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.90">
+
+                    <android.support.design.widget.TextInputEditText
+                        android:id="@+id/add_login_password_et"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/generated_password"
+                        android:inputType="textPassword"
+                        android:maxLines="1"/>
+
+                </android.support.design.widget.TextInputLayout>
+
+                <ImageButton
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/ic_autorenew_black"
+                    android:background="@null"
+                    android:layout_marginStart="4dp"
+                    android:onClick="generatePasswordTapped"
+                    android:id="@+id/add_login_generate_password_btn"
+                    android:layout_weight="1" />
+            </LinearLayout>
+
+            <Button
+                android:layout_width="155dp"
+                android:layout_height="wrap_content"
+                android:text="@string/save_password_button_text"
+                android:layout_marginTop="8dp"
+                android:id="@+id/add_login_save_login_btn"
+                android:background="#fa1100"
+                android:textColor="@android:color/white" />
+
         </LinearLayout>
 
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/save_password_button_text"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="4dp"
-            android:layout_below="@+id/add_login_password_et_layout"
-            android:id="@+id/add_login_save_login_btn" />
-
-    </RelativeLayout>
-
-</ScrollView>
+    </ScrollView>
+</LinearLayout>

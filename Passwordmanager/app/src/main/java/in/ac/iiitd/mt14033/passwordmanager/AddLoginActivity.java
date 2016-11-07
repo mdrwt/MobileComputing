@@ -6,11 +6,16 @@ import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import in.ac.iiitd.mt14033.passwordmanager.model.PasswordManager;
 
 public class AddLoginActivity extends AppCompatActivity implements DialogGeneratePassword.DialogGeneratePasswordListner{
 
@@ -19,6 +24,7 @@ public class AddLoginActivity extends AppCompatActivity implements DialogGenerat
     private EditText passwordET;
     private EditText usernameET;
     private Button saveLoginButton;
+    private boolean hasUnsavedChanges=false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +38,75 @@ public class AddLoginActivity extends AppCompatActivity implements DialogGenerat
         usernameET = (EditText) findViewById(R.id.add_login_username_et);
         String packagename = getIntent().getExtras().getString(getString(R.string.matching_login_package_name));
         urlET.setText(packagename);
+        nameET.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                hasUnsavedChanges=true;
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+        urlET.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                hasUnsavedChanges=true;
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+        passwordET.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                hasUnsavedChanges=true;
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+        usernameET.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                hasUnsavedChanges=true;
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
+        //retrieve the action toolbar (status bar)
+        Toolbar apptoolbar = (Toolbar) findViewById(R.id.generatePassword_toolbar);
+        setSupportActionBar(apptoolbar);
+        getSupportActionBar().setTitle(getResources().getString(R.string.add_login_toolbar_title));
 
         final DBHelper dbh = new DBHelper(this);
 
@@ -53,9 +128,15 @@ public class AddLoginActivity extends AppCompatActivity implements DialogGenerat
                 pm.set_name(name);
                 pm.setUrl(url);
                 pm.setUserId(username);
-                dbh.addPassword(pm);
-                Toast toast = Toast.makeText(getApplicationContext(), "Password saved in SqliteDB ", Toast.LENGTH_SHORT);
-                toast.show();
+                boolean res = dbh.addPassword(pm);
+                if (res) {
+                    Toast toast = Toast.makeText(getApplicationContext(), "Password saved in SqliteDB ", Toast.LENGTH_SHORT);
+                    toast.show();
+                    finish();
+                }
+                else {
+                    Toast.makeText(getApplicationContext(), getString(R.string.ERROR_GENERIC1), Toast.LENGTH_LONG).show();
+                }
                 saveLoginButton.setEnabled(false);
             }
 
@@ -67,19 +148,20 @@ public class AddLoginActivity extends AppCompatActivity implements DialogGenerat
 
     @Override
     public void onBackPressed() {
-        new AlertDialog.Builder(this)
-                .setIcon(android.R.drawable.sym_def_app_icon)
-                .setTitle("Why :.....(")
-                .setMessage("Are you sure you want to leave?")
-                .setPositiveButton("Yes", new DialogInterface.OnClickListener()
-                {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        finish();
-                    }
-                })
-                .setNegativeButton("No", null)
-                .show();
+        if(hasUnsavedChanges) {
+            new AlertDialog.Builder(this)
+                    .setIcon(android.R.drawable.sym_def_app_icon)
+                    .setTitle("Exit?")
+                    .setMessage("Are you sure you want to leave?")
+                    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            finish();
+                        }
+                    })
+                    .setNegativeButton("No", null)
+                    .show();
+        }
     }
 
     public void generatePasswordTapped(View view) {

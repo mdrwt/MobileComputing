@@ -12,8 +12,8 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
-        <activity android:name=".AddLoginActivity" />
+        android:theme="@style/MyTheme" >
+        <activity android:name=".MainActivity" />
         <activity
             android:name=".LoginActivity"
             android:noHistory="true">
@@ -25,6 +25,21 @@
         </activity>
         <activity android:name=".ListPassword" />
         <activity android:name=".EditPasswordActivity" />
+        <activity android:name=".ForgotPasswordActivity" />
+        <activity android:name=".SettingsActivity" />
+        <activity android:name=".AdvancedSetttingsActivity" />
+        <activity android:name=".AboutAppActivity" />
+        <activity android:name=".AddLoginActivity" />
+        <activity
+            android:name=".CreateAccountActivity"
+            android:label="Create Account">
+        </activity>
+
+        <activity
+            android:label="Create Account"
+            android:name=".RegisterActivity">
+        </activity>
+
 
         <service
             android:name=".MyAccessibilityService"
@@ -40,15 +55,6 @@
                 android:name="android.accessibilityservice"
                 android:resource="@xml/accessibility_service_config" />
         </service>
-
-        <activity
-            android:name=".MatchingLoginsDialogActivity"
-            android:excludeFromRecents="true"
-            android:label="@string/dialog_matching_title"
-            android:launchMode="singleInstance"
-            android:taskAffinity=""
-            android:theme="@style/Theme.AppCompat.Dialog" />
-
     </application>
 
 </manifest>

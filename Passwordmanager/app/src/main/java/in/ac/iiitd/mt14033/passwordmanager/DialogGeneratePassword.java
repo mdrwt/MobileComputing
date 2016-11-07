@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
@@ -40,10 +41,22 @@ public class DialogGeneratePassword extends DialogFragment {
         generatedTV = (TextView) view.findViewById(R.id.dialog_genpass_generated_password);
         passwordLenTV = (TextView) view.findViewById(R.id.dialog_genpass_passlen);
         final SeekBar seekbar = (SeekBar) view.findViewById(R.id.dialog_genpass_seek_plen);
+        final ImageButton regenerate_btn = (ImageButton) view.findViewById(R.id.dialog_genpass_regen_btn);
+        regenerate_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+//                final SeekBar seekbar = (SeekBar) view.findViewById(R.id.dialog_genpass_seek_plen);
+                int progress = seekbar.getProgress();
+                generatedTV.setText(generate_password(progress));
+
+            }
+        });
 
         int saved_len = getActivity().getSharedPreferences(PASSWORD_MANAGER_PREF, MODE_PRIVATE).getInt(getString(R.string.PREFFERED_PASSWORD_LENGTH), 8);
         seekbar.setProgress(saved_len);
-
+        generatedTV.setText(generate_password(saved_len));
+        String plen_text = getString(R.string.dialog_genpass_hint_passlen)+String.valueOf(saved_len);
+        passwordLenTV.setText(plen_text);
 
         seekbar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
@@ -114,6 +127,4 @@ public class DialogGeneratePassword extends DialogFragment {
         random_string = sb1.toString();
         return random_string;
     }
-
-
 }

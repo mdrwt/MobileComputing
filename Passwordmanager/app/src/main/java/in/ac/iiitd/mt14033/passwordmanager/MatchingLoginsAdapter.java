@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import java.util.ArrayList;
 
 import in.ac.iiitd.mt14033.passwordmanager.model.MatchingLogin;
+
 /**
  * Created by madhur rawat on 10/25/16.
  */

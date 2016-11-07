@@ -9,13 +9,16 @@ import android.util.Log;
 
 import java.util.ArrayList;
 
+import in.ac.iiitd.mt14033.passwordmanager.model.MasterUser;
 import in.ac.iiitd.mt14033.passwordmanager.model.MatchingLogin;
+import in.ac.iiitd.mt14033.passwordmanager.model.PasswordManager;
 
 /**
  * Created by jarvisx on 10/2/2016.
  */
 
 public class DBHelper extends SQLiteOpenHelper {
+
 
     static final String TAG = "MyAccessibilityService";
     // All Static variables
@@ -28,6 +31,9 @@ public class DBHelper extends SQLiteOpenHelper {
     // Passwords table name
     private static final String TABLE_PASSWORDS = "passwords";
 
+    private static final String TABLE_MASTER = "mastertable";
+
+
     // Passwords Table Columns names
     protected static final String KEY_ID = "_id";
     protected static final String KEY_NAME = "name";
@@ -35,6 +41,8 @@ public class DBHelper extends SQLiteOpenHelper {
     protected static final String KEY_URL = "url";
     protected static final String KEY_PASSWORD = "password";
     protected static final String KEY_SAVE_ALLOWED = "saveallowed";
+    protected static final String KEY_MASTER_HELP = "masterhelp";
+    protected static final String KEY_EMAIL = "email";
 
     public DBHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -45,7 +53,13 @@ public class DBHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         String CREATE_PASSWORD_TABLE = "CREATE TABLE " + TABLE_PASSWORDS + "( " + KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," + KEY_USERNAME + " TEXT,"+ KEY_NAME + " TEXT," + KEY_URL + " TEXT," + KEY_PASSWORD + " TEXT,"+KEY_SAVE_ALLOWED+" INTEGER)";
+        String CREATE_MASTER_TABLE = "CREATE TABLE " + TABLE_MASTER + "( " +
+                KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," + KEY_EMAIL +
+                " TEXT," + KEY_PASSWORD + " TEXT,"+
+                KEY_MASTER_HELP+" TEXT)";
+
         db.execSQL(CREATE_PASSWORD_TABLE);
+        db.execSQL(CREATE_MASTER_TABLE);
     }
 
     // Upgrading database
@@ -53,6 +67,7 @@ public class DBHelper extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         // Drop older table if existed
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_PASSWORDS);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_MASTER);
 
         // Create tables again
         onCreate(db);
@@ -78,6 +93,67 @@ public class DBHelper extends SQLiteOpenHelper {
         long ret = db.insert(TABLE_PASSWORDS, null, values);
         db.close(); // Closing database connection
         return (ret!=-1);
+    }
+
+    boolean addMasterPassword(MasterUser masterUser) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(KEY_EMAIL, masterUser.getEmail());
+        values.put(KEY_PASSWORD, masterUser.getPassword());
+        values.put(KEY_MASTER_HELP, masterUser.getHelp());
+
+        // Inserting Row
+        long ret = db.insert(TABLE_MASTER, null, values);
+        db.close(); // Closing database connection
+        return (ret!=-1);
+    }
+
+    MasterUser getMasterPassword(MasterUser masterUser) {
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        String[] projection = new String[] { KEY_ID, KEY_EMAIL, KEY_PASSWORD, KEY_MASTER_HELP};
+        String where = KEY_EMAIL+"=\""+masterUser.getEmail()+"\"";
+        Log.v(TAG, "where: "+where);
+        Cursor cursor = db.query(
+                TABLE_MASTER,
+                projection,
+                where,
+                null,
+                null,
+                null,
+                null);
+        if (cursor != null && cursor.getCount()>0)
+            cursor.moveToFirst();
+        else
+            return null;
+        String email = cursor.getString(cursor.getColumnIndexOrThrow(KEY_EMAIL));
+        String password = cursor.getString(cursor.getColumnIndexOrThrow(KEY_PASSWORD));
+        String help = cursor.getString(cursor.getColumnIndexOrThrow(KEY_MASTER_HELP));
+        MasterUser masterUser1 = new MasterUser(email, password, help);
+
+        return masterUser1;
+    }
+    boolean hasMasterUser(MasterUser masterUser) {
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        String[] projection = new String[] { KEY_ID, KEY_EMAIL, KEY_PASSWORD, KEY_MASTER_HELP};
+        String where = KEY_EMAIL+"=\""+masterUser.getEmail()+"\" AND "
+                + KEY_PASSWORD+"=\""+masterUser.getPassword()+"\"";
+        Log.v(TAG, "where: "+where);
+        Cursor cursor = db.query(
+                TABLE_MASTER,
+                projection,
+                where,
+                null,
+                null,
+                null,
+                null);
+        if (cursor != null && cursor.getCount()>0)
+            return true;
+        else
+            return false;
+
     }
 
     // Getting single password
@@ -155,7 +231,7 @@ public class DBHelper extends SQLiteOpenHelper {
     int isPasswordSaveAllowed(String username, String packagename) {
         SQLiteDatabase db = this.getReadableDatabase();
 
-        String[] projection = new String[] { KEY_ID, KEY_USERNAME, KEY_NAME, KEY_URL, KEY_PASSWORD, KEY_SAVE_ALLOWED};
+        String[] projection = new String[] { KEY_ID, KEY_USERNAME, KEY_URL, KEY_PASSWORD, KEY_SAVE_ALLOWED};
         String where = KEY_USERNAME+"=\""+username+"\" AND "
                 + KEY_URL+"=\""+packagename+"\"";
         Log.v(TAG, "where: "+where);

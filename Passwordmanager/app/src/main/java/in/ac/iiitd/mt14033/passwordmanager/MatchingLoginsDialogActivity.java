@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import in.ac.iiitd.mt14033.passwordmanager.model.MatchingLogin;
 
 
-public class MatchingLoginsDialogActivity extends AppCompatActivity  implements MatchingLoginsAdapter.OnItemClickListener{
+public class MatchingLoginsDialogActivity extends AppCompatActivity implements MatchingLoginsAdapter.OnItemClickListener{
 
     private RecyclerView matchingLoginsList;
     private RecyclerView.Adapter mAdapter;
