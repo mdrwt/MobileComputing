@@ -1,4 +1,4 @@
-package in.ac.iiitd.madhur15030.mc_a4;
+package in.ac.iiitd.mt14033.passwordmanager;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -7,19 +7,18 @@ import android.view.ViewGroup;
 
 import java.util.ArrayList;
 
-
+import in.ac.iiitd.mt14033.passwordmanager.model.SavedPassword;
 
 /**
- * Created by Madhur on 03/11/16.
+ * Created by Madhur on 09/11/16.
  */
 
-public class ToDoRecordAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
-
-    private ArrayList<ToDo> toDos;
+public class ListPasswordRecordAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+    private ArrayList<SavedPassword> savedPasswords;
     private OnItemClickListener mListener;
 
-    public ToDoRecordAdapter(ArrayList<ToDo> tds, OnItemClickListener listener) {
-        toDos=tds;
+    public ListPasswordRecordAdapter(ArrayList<SavedPassword> saveds, OnItemClickListener listener) {
+        savedPasswords=saveds;
         mListener = listener;
     }
 
@@ -27,16 +26,16 @@ public class ToDoRecordAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
      * Interface for receiving click events from cells.
      */
     public interface OnItemClickListener {
-        void onClickToDo(View view, int position);
+        void onClickPassword(View view, int position);
         void onLongClickToDo(View view, int position);
     }
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
-        if(toDos.size()==0)
+        if(savedPasswords.size()==0)
             return;
-        final ToDoItemRecordViewHolder itemHolder = (ToDoItemRecordViewHolder) holder;
-        ((ToDoItemRecordViewHolder) holder).titleTV.setText((toDos.get(position)).getTitle());
+        final SavedPasswordItemViewHolder itemHolder = (SavedPasswordItemViewHolder) holder;
+        ((SavedPasswordItemViewHolder) holder).titleTV.setText((savedPasswords.get(position)).getTitle());
         itemHolder.rootView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -60,7 +59,7 @@ public class ToDoRecordAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.list_item_todo, parent, false);
+                .inflate(R.layout.list_item_saved_password, parent, false);
         return new ToDoItemRecordViewHolder(v);
     }
 
@@ -83,5 +82,4 @@ public class ToDoRecordAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         }
         return null;
     }
-
 }

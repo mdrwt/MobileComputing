@@ -23,20 +23,21 @@
     <LinearLayout android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="16dp">
+        android:padding="16dp"
+        android:background="#494b48">
 
         <TextView android:id="@+id/todo_detail_title_tv"
-            style="?android:textAppearanceLarge"
+            style="@style/CodeFontLarge"
             android:textStyle="bold"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp" />
 
-        <TextView style="?android:textAppearanceMedium"
-            android:lineSpacingMultiplier="1.2"
+        <TextView android:lineSpacingMultiplier="1.2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/todo_detail_detail_tv"
+            style="@style/CodeFont"
             android:text="atatatata" />
 
     </LinearLayout>

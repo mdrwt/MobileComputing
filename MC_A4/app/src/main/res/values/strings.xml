@@ -4,11 +4,19 @@
     <string name="add_new_to_do">Add New Todo</string>
     <string name="add">Add</string>
     <string name="cancel">Cancel</string>
+    <string name="delete">Delete</string>
     <string name="dialog_header_add_todo">Add New ToDo</string>
     <string name="dialog_title_hint">Title</string>
     <string name="dialog_detail_hint">Todo detail</string>
+    <string name="title_toolbar_todo_list">Todo List</string>
+    <string name="title_toolbar_todo_detail">Todo Details</string>
+    <string name="dialog_deltodo_title">Delete?</string>
+    <string name="dialog_deltodo_message">Do you want to delete this todo permanently?</string>
+    <string name="KEY_LONG_CLICKED_INDEX">long_click_index</string>
 
+    <string name="todo_deleted">Todo successfully deleted</string>
     <!--Error Messages-->
-    <string name="Exception_error_updating_record">Error Updating Student Record</string>
+    <string name="Exception_error_updating_record">Error Updating ToDo Record</string>
+    <string name="Exception_error_deleting_record">Error Deleting ToDo Record</string>
 
 </resources>

@@ -23,14 +23,14 @@ import java.io.FileOutputStream;
 import java.io.OutputStream;
 import java.util.Random;
 
-import in.ac.iiitd.mt14033.passwordmanager.model.PasswordManager;
+import in.ac.iiitd.mt14033.passwordmanager.model.SavedPassword;
 
 public class MainActivity extends AppCompatActivity {
 
     final private String TAG = "mt14033.PM.MainAct";
     final private String PASSWORD_MANAGER_PREF = "PASSWORD_MANAGER";
     // Database Name
-    private static final String DATABASE_NAME = "PasswordManager.sqlitedb";
+    private static final String DATABASE_NAME = "SavedPassword.sqlitedb";
 
     private EditText passwordLength;
     private EditText passwordUrl;
@@ -101,7 +101,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Log.d(TAG, "in passwordListButton");
-                Intent list_password = new Intent(getApplicationContext(),ListPassword.class);
+                Intent list_password = new Intent(getApplicationContext(),ListPasswordActivity.class);
                 startActivity(list_password);
             }
         });*/
@@ -157,7 +157,7 @@ public class MainActivity extends AppCompatActivity {
 
                 // code to add in sqlite db
                 //dbh.getWritableDatabase();
-                PasswordManager pm = new PasswordManager();
+                SavedPassword pm = new SavedPassword();
 
                 pm.setPassword(password);
                 pm.setUrl(url);

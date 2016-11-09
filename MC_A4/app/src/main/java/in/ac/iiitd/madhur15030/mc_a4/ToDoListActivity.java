@@ -11,12 +11,16 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
 import in.ac.iiitd.madhur15030.mc_a4.database.DBHelper;
 
-public class ToDoListActivity extends AppCompatActivity implements AddToDoDialog.AddToDoDialogListner, ToDoRecordAdapter.OnItemClickListener{
+public class ToDoListActivity extends AppCompatActivity
+        implements AddToDoDialog.AddToDoDialogListner
+        , ToDoRecordAdapter.OnItemClickListener
+        , DialogDeleteToDo.DialogDeleteToDoDialogListner{
 
     private RecyclerView toDoList;
     private RecyclerView.Adapter mAdapter;
@@ -24,14 +28,12 @@ public class ToDoListActivity extends AppCompatActivity implements AddToDoDialog
 
     private ArrayList<ToDo> toDos;
     private final String TODO_INDEX="toindex";
+    private int longclick_index;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_to_do_list);
-
-//        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-//        getSupportActionBar().setHomeButtonEnabled(true);
 
         toDoList = (RecyclerView)findViewById(R.id.todoList);
         mLayoutManager = new LinearLayoutManager(this);
@@ -39,6 +41,7 @@ public class ToDoListActivity extends AppCompatActivity implements AddToDoDialog
         toDos = new ArrayList<>();
         mAdapter = new ToDoRecordAdapter(toDos, this);
         toDoList.setAdapter(mAdapter);
+
 
     }
 
@@ -102,5 +105,28 @@ public class ToDoListActivity extends AppCompatActivity implements AddToDoDialog
         Intent intent = new Intent(ToDoListActivity.this, ScreenSlideActivity.class);
         intent.putExtra(TODO_INDEX, position);
         startActivity(intent);
+    }
+
+    @Override
+    public void onLongClickToDo(View view, int position) {
+        DialogDeleteToDo dialogDeleteToDo = new DialogDeleteToDo();
+        longclick_index = position;
+        dialogDeleteToDo.show(getSupportFragmentManager(), "deletetodo");
+    }
+
+    /**
+     * Implementation of delete dialog listeners
+     */
+    @Override
+    public void onDeleteClick(DialogFragment dialog) {
+        ToDo toDo = ((ToDoRecordAdapter)toDoList.getAdapter()).getItem(longclick_index);
+        boolean res = DBHelper.getInstance().deleteToDoRecord(toDo.getTitle().toString(), getApplicationContext());
+        if(res) {
+            Toast.makeText(getApplicationContext(), getString(R.string.todo_deleted), Toast.LENGTH_SHORT).show();
+        }
+        else {
+            Toast.makeText(getApplicationContext(), getString(R.string.Exception_error_deleting_record), Toast.LENGTH_SHORT).show();
+        }
+        reloadList();
     }
 }

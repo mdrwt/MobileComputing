@@ -4,7 +4,7 @@ package in.ac.iiitd.mt14033.passwordmanager.model;
  * Created by jarvisx on 10/2/2016.
  */
 
-public class PasswordManager {
+public class SavedPassword {
 
     //private variables
     int _id;
@@ -14,11 +14,11 @@ public class PasswordManager {
     String _password;
 
     // Empty constructor
-    public PasswordManager(){
+    public SavedPassword(){
 
     }
 
-    public PasswordManager(int _id, String _name, String _user_id, String _url, String _password) {
+    public SavedPassword(int _id, String _name, String _user_id, String _url, String _password) {
         this._id = _id;
         this._name = _name;
         this._user_id = _user_id;

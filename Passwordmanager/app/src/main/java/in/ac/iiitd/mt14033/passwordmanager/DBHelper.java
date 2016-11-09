@@ -11,7 +11,7 @@ import java.util.ArrayList;
 
 import in.ac.iiitd.mt14033.passwordmanager.model.MasterUser;
 import in.ac.iiitd.mt14033.passwordmanager.model.MatchingLogin;
-import in.ac.iiitd.mt14033.passwordmanager.model.PasswordManager;
+import in.ac.iiitd.mt14033.passwordmanager.model.SavedPassword;
 
 /**
  * Created by jarvisx on 10/2/2016.
@@ -26,7 +26,7 @@ public class DBHelper extends SQLiteOpenHelper {
     private static final int DATABASE_VERSION = 11;
 
     // Database Name
-    private static final String DATABASE_NAME = "PasswordManager.sqlitedb";
+    private static final String DATABASE_NAME = "SavedPassword.sqlitedb";
 
     // Passwords table name
     private static final String TABLE_PASSWORDS = "passwords";
@@ -78,7 +78,7 @@ public class DBHelper extends SQLiteOpenHelper {
      */
 
     // Adding new password
-    boolean addPassword(PasswordManager pm) {
+    boolean addPassword(SavedPassword pm) {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -157,7 +157,7 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
     // Getting single password
-    PasswordManager getPassword(int id) {
+    SavedPassword getPassword(int id) {
         SQLiteDatabase db = this.getReadableDatabase();
 
         Cursor cursor = db.query(TABLE_PASSWORDS, new String[] { KEY_ID,
@@ -166,12 +166,12 @@ public class DBHelper extends SQLiteOpenHelper {
         if (cursor != null)
             cursor.moveToFirst();
 
-        PasswordManager pm = new PasswordManager(Integer.parseInt(cursor.getString(0)),
+        SavedPassword pm = new SavedPassword(Integer.parseInt(cursor.getString(0)),
                 cursor.getString(1), cursor.getString(2), cursor.getString(3), cursor.getString(4));
         return pm;
     }
 
-    PasswordManager getPasswordForUsernameAndPackage(String username, String packagename) {
+    SavedPassword getPasswordForUsernameAndPackage(String username, String packagename) {
         SQLiteDatabase db = this.getReadableDatabase();
 
         String[] projection = new String[] { KEY_ID, KEY_USERNAME, KEY_NAME, KEY_URL, KEY_PASSWORD, KEY_SAVE_ALLOWED};
@@ -190,7 +190,7 @@ public class DBHelper extends SQLiteOpenHelper {
             cursor.moveToFirst();
         else
             return null;
-        PasswordManager pm = new PasswordManager(Integer.parseInt(cursor.getString(0)),
+        SavedPassword pm = new SavedPassword(Integer.parseInt(cursor.getString(0)),
                 cursor.getString(1), cursor.getString(2), cursor.getString(3), cursor.getString(4));
 
         return pm;
@@ -267,7 +267,7 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
     // Updating single password
-    public int updatePassword(PasswordManager pm) {
+    public int updatePassword(SavedPassword pm) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
@@ -281,7 +281,7 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
     // Deleting single password
-    public void deletePassword(PasswordManager pm) {
+    public void deletePassword(SavedPassword pm) {
         SQLiteDatabase db = this.getWritableDatabase();
         db.delete(TABLE_PASSWORDS, KEY_ID + " = ?",
                 new String[] { String.valueOf(pm.getID()) });

@@ -15,7 +15,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import in.ac.iiitd.mt14033.passwordmanager.model.PasswordManager;
+import in.ac.iiitd.mt14033.passwordmanager.model.SavedPassword;
 
 public class AddLoginActivity extends AppCompatActivity implements DialogGeneratePassword.DialogGeneratePasswordListner{
 
@@ -123,7 +123,7 @@ public class AddLoginActivity extends AppCompatActivity implements DialogGenerat
                 String password = passwordET.getText().toString();
                 String username = usernameET.getText().toString();
                 String name = nameET.getText().toString();
-                PasswordManager pm = new PasswordManager();
+                SavedPassword pm = new SavedPassword();
                 pm.setPassword(password);
                 pm.set_name(name);
                 pm.setUrl(url);
@@ -161,6 +161,9 @@ public class AddLoginActivity extends AppCompatActivity implements DialogGenerat
                     })
                     .setNegativeButton("No", null)
                     .show();
+        }
+        else {
+            finish();
         }
     }
 

@@ -18,9 +18,9 @@ import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.Toast;
 
-import in.ac.iiitd.mt14033.passwordmanager.model.PasswordManager;
+import in.ac.iiitd.mt14033.passwordmanager.model.SavedPassword;
 
-public class ListPassword extends AppCompatActivity {
+public class ListPasswordActivity extends AppCompatActivity {
 
     final String TAG = "mt14033.ListPass";
     String[] fromColumns = {DBHelper.KEY_ID, DBHelper.KEY_USERNAME, DBHelper.KEY_NAME, DBHelper.KEY_URL, DBHelper.KEY_PASSWORD};
@@ -28,7 +28,6 @@ public class ListPassword extends AppCompatActivity {
 
     private ActionBarDrawerToggle mDrawerToggle;
     private DrawerLayout mDrawerLayout;
-    private String mActivityTitle;
     private ListView mDrawerList;
     private ArrayAdapter<String> mAdapter;
     private static String mEmail;
@@ -45,7 +44,6 @@ public class ListPassword extends AppCompatActivity {
 
         mDrawerList = (ListView)findViewById(R.id.login_navList);
         mDrawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
-        mActivityTitle = getTitle().toString();
 
         mDrawerList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -76,7 +74,7 @@ public class ListPassword extends AppCompatActivity {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
                 Log.d(TAG, "in LongClick Event, Id: "+String.valueOf(id));
-                PasswordManager pm = new PasswordManager();
+                SavedPassword pm = new SavedPassword();
                 pm.setID(Integer.parseInt(String.valueOf(id)));
                 dbh.deletePassword(pm);
                 Toast toast = Toast.makeText(getApplicationContext(), "Entry deleted from SqliteDB. Reload view to see updated password list.", Toast.LENGTH_SHORT);
@@ -89,7 +87,7 @@ public class ListPassword extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Log.d(TAG, "in OnClick Event, Id: "+String.valueOf(id));
-                Intent in = new Intent(ListPassword.this, EditPasswordActivity.class);
+                Intent in = new Intent(ListPasswordActivity.this, EditPasswordActivity.class);
                 in.putExtra("id", String.valueOf(id));
                 startActivity(in);
             }
@@ -129,7 +127,7 @@ public class ListPassword extends AppCompatActivity {
         Intent intent;
         switch (position) {
             case 0:
-                intent = new Intent(ListPassword.this, AddLoginActivity.class);
+                intent = new Intent(ListPasswordActivity.this, AddLoginActivity.class);
                 intent.putExtra("mEmail", mEmail);
                 startActivity(intent);
                 break;

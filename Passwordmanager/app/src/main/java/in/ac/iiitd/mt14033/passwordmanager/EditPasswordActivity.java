@@ -9,7 +9,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import in.ac.iiitd.mt14033.passwordmanager.model.PasswordManager;
+import in.ac.iiitd.mt14033.passwordmanager.model.SavedPassword;
 
 public class EditPasswordActivity extends AppCompatActivity {
 
@@ -40,7 +40,7 @@ public class EditPasswordActivity extends AppCompatActivity {
 
         String record_id = getIntent().getExtras().getString("id");
 
-        PasswordManager pm = new PasswordManager();
+        SavedPassword pm = new SavedPassword();
 
         pm = dbh.getPassword(Integer.parseInt(record_id));
 
@@ -56,7 +56,7 @@ public class EditPasswordActivity extends AppCompatActivity {
         button.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
-                PasswordManager pm1 = new PasswordManager();
+                SavedPassword pm1 = new SavedPassword();
 
                 pm1.setID(Integer.parseInt(id.getText().toString()));
                 pm1.setUserId(user_id.getText().toString());

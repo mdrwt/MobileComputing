@@ -90,7 +90,7 @@ public class DBHelper {
         return new ToDo(mTitle, detail);
     }
 
-    public int deleteToDoRecord(String title, Context context) {
+    public boolean deleteToDoRecord(String title, Context context) {
         ReaderDBHelper readerDBHelper = new ReaderDBHelper(context);
 
         SQLiteDatabase db=null;
@@ -103,12 +103,12 @@ public class DBHelper {
         String where = ToDoRecordReaderContract.ToDoRecordEntry.COLUMN_NAME_TITLE + " LIKE ?";
         String args[] = {title};
         try {
-            int resid = db.delete(ToDoRecordReaderContract.ToDoRecordEntry.TABLE_NAME, where, args);
-            return resid;
+            db.delete(ToDoRecordReaderContract.ToDoRecordEntry.TABLE_NAME, where, args);
+            return true;
         } catch (SQLiteException e) {
-            e.printStackTrace();
+            return false;
         }
-        return 0;
+
     }
 
     public ArrayList<ToDo> getAllToDoRecord(Context context) {

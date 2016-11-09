@@ -2,7 +2,7 @@
     android:layout_width="fill_parent"
     android:layout_height="?android:attr/listPreferredItemHeight"
     android:padding="6dip"
-    android:background="#9ef28f">
+    android:background="#494b48">
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
@@ -18,8 +18,7 @@
         android:layout_height="match_parent"
         android:layout_alignWithParentIfMissing="true"
         android:gravity="center_vertical"
-        android:textColor="@android:color/black"
-        android:text="Example application"
+        style="@style/CodeFont"
         android:textSize="20sp"
         android:layout_alignParentTop="true"
         android:layout_alignParentStart="true" />

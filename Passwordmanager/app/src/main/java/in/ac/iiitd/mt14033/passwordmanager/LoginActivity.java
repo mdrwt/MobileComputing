@@ -333,7 +333,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             MasterUser masterUser = new MasterUser(email, password, null);
             boolean ismaster = dbh.hasMasterUser(masterUser);
             if(ismaster) {
-                Intent myIntent2 = new Intent(LoginActivity.this, ListPassword.class);
+                Intent myIntent2 = new Intent(LoginActivity.this, ListPasswordActivity.class);
                 myIntent2.putExtra("mEmail", email);
                 startActivity(myIntent2);
             }
@@ -514,7 +514,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 //            showProgress(false);
 //            Log.d(TAG, "in onPostExecute.");
 //            if (success) {
-//                Intent myIntent2 = new Intent(LoginActivity.this, ListPassword.class);
+//                Intent myIntent2 = new Intent(LoginActivity.this, ListPasswordActivity.class);
 //                myIntent2.putExtra("mEmail", mEmail);
 //                startActivity(myIntent2);
 //            } else {

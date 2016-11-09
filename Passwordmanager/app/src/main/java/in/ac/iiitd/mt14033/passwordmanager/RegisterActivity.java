@@ -16,7 +16,7 @@ public class RegisterActivity extends AppCompatActivity {
     final private String TAG = "mt14033.PM.MainAct";
     final private String PASSWORD_MANAGER_PREF = "PASSWORD_MANAGER";
     // Database Name
-    private static final String DATABASE_NAME = "PasswordManager.sqlitedb";
+    private static final String DATABASE_NAME = "SavedPassword.sqlitedb";
     private static TextView masterPassword;
     private static TextView hintForPassword;
     private static TextView reEnterPassword;

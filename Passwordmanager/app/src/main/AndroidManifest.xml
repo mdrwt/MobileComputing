@@ -23,7 +23,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ListPassword" />
+        <activity android:name=".ListPasswordActivity" />
         <activity android:name=".EditPasswordActivity" />
         <activity android:name=".ForgotPasswordActivity" />
         <activity android:name=".SettingsActivity" />

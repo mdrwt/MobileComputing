@@ -15,11 +15,12 @@
   limitations under the License.
   -->
 
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item android:id="@+id/action_add_todo"
-        android:icon="@drawable/ic_action_contact"
+        android:icon="@drawable/ic_add_white_24dp"
         android:title="@string/action_add_todo"
-        android:showAsAction="ifRoom|withText" />
+        app:showAsAction="always" />
 
 </menu>
