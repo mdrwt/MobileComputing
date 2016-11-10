@@ -39,6 +39,14 @@
             android:label="Create Account"
             android:name=".RegisterActivity">
         </activity>
+        <activity
+            android:name=".MatchingLoginsDialogActivity"
+            android:excludeFromRecents="true"
+            android:label="@string/dialog_matching_title"
+            android:launchMode="singleInstance"
+            android:taskAffinity=""
+            android:theme="@style/Theme.AppCompat.Dialog">
+        </activity>>
 
 
         <service

@@ -11,14 +11,14 @@ import android.widget.TextView;
 public class SavedPasswordItemViewHolder  extends RecyclerView.ViewHolder{
     final View rootView;
     final TextView nameTV;
-    final TextView packagename;
+    final TextView packagenameTV;
 
     public SavedPasswordItemViewHolder(View itemView) {
         super(itemView);
 
         rootView = itemView;
         nameTV = (TextView) itemView.findViewById(R.id.saved_pass_name_tv);
-        packagename = (TextView) itemView.findViewById(R.id.saved_pass_package_tv);
+        packagenameTV = (TextView) itemView.findViewById(R.id.saved_pass_package_tv);
 
     }
 }

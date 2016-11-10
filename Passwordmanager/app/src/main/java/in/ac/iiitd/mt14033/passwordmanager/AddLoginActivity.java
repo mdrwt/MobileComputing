@@ -125,9 +125,9 @@ public class AddLoginActivity extends AppCompatActivity implements DialogGenerat
                 String name = nameET.getText().toString();
                 SavedPassword pm = new SavedPassword();
                 pm.setPassword(password);
-                pm.set_name(name);
+                pm.setName(name);
                 pm.setUrl(url);
-                pm.setUserId(username);
+                pm.setUsername(username);
                 boolean res = dbh.addPassword(pm);
                 if (res) {
                     Toast toast = Toast.makeText(getApplicationContext(), "Password saved in SqliteDB ", Toast.LENGTH_SHORT);

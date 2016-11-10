@@ -161,7 +161,7 @@ public class MainActivity extends AppCompatActivity {
 
                 pm.setPassword(password);
                 pm.setUrl(url);
-                pm.setUserId(userid);
+                pm.setUsername(userid);
 
                 dbh.addPassword(pm);
                 Toast toast = Toast.makeText(getApplicationContext(), "Password saved in SqliteDB ", Toast.LENGTH_SHORT);

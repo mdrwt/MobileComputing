@@ -78,7 +78,7 @@ public class MyAccessibilityService extends AccessibilityService {
             /**
              * Detect popup from our app and respective button pushes within it.
              */
-            Log.v(getString(R.string.VTAG), event.getPackageName()+" "+getEventType(event)+" "+event.getClassName());
+//            Log.v(getString(R.string.VTAG), event.getPackageName()+" "+getEventType(event)+" "+event.getClassName());
             if(event.getPackageName().equals(getString(R.string.selfpackagename)) &&
                     event.getClassName().equals("android.widget.Button") &&
                     event.getEventType()==AccessibilityEvent.TYPE_VIEW_CLICKED) {

@@ -44,12 +44,12 @@ public class EditPasswordActivity extends AppCompatActivity {
 
         pm = dbh.getPassword(Integer.parseInt(record_id));
 
-        Log.d(TAG,"UserId1: "+pm.getUserId());
+        Log.d(TAG,"UserId1: "+pm.getUsername());
         Log.d(TAG,"Url1: "+pm.getUrl());
         Log.d(TAG,"Password1: "+pm.getPassword());
 
-        id.setText(String.valueOf(pm.getID()));
-        user_id.setText(pm.getUserId());
+        id.setText(String.valueOf(pm.getId()));
+        user_id.setText(pm.getUsername());
         url.setText(pm.getUrl());
         password.setText(pm.getPassword());
 
@@ -58,14 +58,16 @@ public class EditPasswordActivity extends AppCompatActivity {
             public void onClick(View view) {
                 SavedPassword pm1 = new SavedPassword();
 
-                pm1.setID(Integer.parseInt(id.getText().toString()));
-                pm1.setUserId(user_id.getText().toString());
+                pm1.setId(Integer.parseInt(id.getText().toString()));
+                pm1.setUsername(user_id.getText().toString());
                 pm1.setUrl(url.getText().toString());
                 pm1.setPassword(password.getText().toString());
 
+                // TODO: Check implementation here. Regarding correct model usage
+
                 dbh.updatePassword(pm1);
 
-                Log.d(TAG,"UserId2: "+pm1.getUserId());
+                Log.d(TAG,"UserId2: "+pm1.getId());
                 Log.d(TAG,"Url2: "+pm1.getUrl());
                 Log.d(TAG,"Password2: "+pm1.getPassword());
 

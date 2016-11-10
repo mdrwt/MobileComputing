@@ -35,11 +35,12 @@ public class ListPasswordRecordAdapter extends RecyclerView.Adapter<RecyclerView
         if(savedPasswords.size()==0)
             return;
         final SavedPasswordItemViewHolder itemHolder = (SavedPasswordItemViewHolder) holder;
-        ((SavedPasswordItemViewHolder) holder).titleTV.setText((savedPasswords.get(position)).getTitle());
+        ((SavedPasswordItemViewHolder) holder).nameTV.setText((savedPasswords.get(position)).getName());
+        ((SavedPasswordItemViewHolder) holder).packagenameTV.setText((savedPasswords.get(position)).getUrl());
         itemHolder.rootView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mListener.onClickToDo(view, position);
+                mListener.onClickPassword(view, position);
             }
         });
         itemHolder.rootView.setLongClickable(true);
@@ -53,20 +54,20 @@ public class ListPasswordRecordAdapter extends RecyclerView.Adapter<RecyclerView
     }
     @Override
     public int getItemCount() {
-        return toDos.size();
+        return savedPasswords.size();
     }
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.list_item_saved_password, parent, false);
-        return new ToDoItemRecordViewHolder(v);
+        return new SavedPasswordItemViewHolder(v);
     }
 
-    public void updateData(ArrayList<ToDo> stRecords) {
+    public void updateData(ArrayList<SavedPassword> stRecords) {
         try {
-            toDos.clear();
-            toDos.addAll(stRecords);
+            savedPasswords.clear();
+            savedPasswords.addAll(stRecords);
             notifyDataSetChanged();
 
         } catch(NullPointerException e) {
@@ -74,9 +75,9 @@ public class ListPasswordRecordAdapter extends RecyclerView.Adapter<RecyclerView
         }
     }
 
-    public ToDo getItem(int position) {
+    public SavedPassword getItem(int position) {
         try {
-            return toDos.get(position);
+            return savedPasswords.get(position);
         } catch (IndexOutOfBoundsException e) {
             e.printStackTrace();
         }

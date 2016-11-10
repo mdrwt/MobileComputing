@@ -2,12 +2,13 @@ package in.ac.iiitd.mt14033.passwordmanager;
 
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.database.Cursor;
+import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
@@ -15,12 +16,12 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.SimpleCursorAdapter;
-import android.widget.Toast;
+
+import java.util.ArrayList;
 
 import in.ac.iiitd.mt14033.passwordmanager.model.SavedPassword;
 
-public class ListPasswordActivity extends AppCompatActivity {
+public class ListPasswordActivity extends AppCompatActivity implements ListPasswordRecordAdapter.OnItemClickListener{
 
     final String TAG = "mt14033.ListPass";
     String[] fromColumns = {DBHelper.KEY_ID, DBHelper.KEY_USERNAME, DBHelper.KEY_NAME, DBHelper.KEY_URL, DBHelper.KEY_PASSWORD};
@@ -28,9 +29,14 @@ public class ListPasswordActivity extends AppCompatActivity {
 
     private ActionBarDrawerToggle mDrawerToggle;
     private DrawerLayout mDrawerLayout;
-    private ListView mDrawerList;
-    private ArrayAdapter<String> mAdapter;
+    private ArrayAdapter<String> dAdapter;
     private static String mEmail;
+    private ListView mDrawerList;
+
+    private RecyclerView savedPasswordList;
+    private RecyclerView.Adapter mAdapter;
+    private RecyclerView.LayoutManager mLayoutManager;
+    private ArrayList<SavedPassword> savedPasswords;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +47,15 @@ public class ListPasswordActivity extends AppCompatActivity {
         Toolbar apptoolbar = (Toolbar) findViewById(R.id.listpassword_toolbar);
         setSupportActionBar(apptoolbar);
         getSupportActionBar().setTitle(getResources().getString(R.string.listpassword_toolbar_title));
+
+
+        savedPasswordList = (RecyclerView)findViewById(R.id.saved_password_list);
+        mLayoutManager = new LinearLayoutManager(this);
+        savedPasswordList.setLayoutManager(mLayoutManager);
+        savedPasswords = new ArrayList<>();
+        mAdapter = new ListPasswordRecordAdapter(savedPasswords, this);
+        savedPasswordList.setAdapter(mAdapter);
+
 
         mDrawerList = (ListView)findViewById(R.id.login_navList);
         mDrawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
@@ -60,44 +75,25 @@ public class ListPasswordActivity extends AppCompatActivity {
         this.getSupportActionBar().setHomeButtonEnabled(true);
 
 
-        final DBHelper dbh = new DBHelper(this);
+    }
 
-        Log.d(TAG, String.valueOf(dbh.getPasswordsCount()));
-        Cursor cursor = dbh.getAllPasswords();
+    @Override
+    protected void onResume() {
+        super.onResume();
+        ArrayList<SavedPassword> savedPasswords = new ArrayList<>();
+        final DBHelper dbh = new DBHelper(getApplicationContext());
+        savedPasswords = dbh.getAllPasswords();
 
-        SimpleCursorAdapter adapter = new SimpleCursorAdapter(this, R.layout.row, cursor, fromColumns, toViews, 0);
-        ListView listView = (ListView) findViewById(R.id.list);
+        ListPasswordRecordAdapter adapter = (ListPasswordRecordAdapter) savedPasswordList.getAdapter();
+        adapter.updateData(savedPasswords);
 
-        listView.setAdapter(adapter);
 
-        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                Log.d(TAG, "in LongClick Event, Id: "+String.valueOf(id));
-                SavedPassword pm = new SavedPassword();
-                pm.setID(Integer.parseInt(String.valueOf(id)));
-                dbh.deletePassword(pm);
-                Toast toast = Toast.makeText(getApplicationContext(), "Entry deleted from SqliteDB. Reload view to see updated password list.", Toast.LENGTH_SHORT);
-                toast.show();
-                return true;
-            }
-        });
-
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Log.d(TAG, "in OnClick Event, Id: "+String.valueOf(id));
-                Intent in = new Intent(ListPasswordActivity.this, EditPasswordActivity.class);
-                in.putExtra("id", String.valueOf(id));
-                startActivity(in);
-            }
-        });
     }
 
     private void addDrawerItems() {
         String[] osArray = { getResources().getString(R.string.navdrawer_item0) };
-        mAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, osArray);
-        mDrawerList.setAdapter(mAdapter);
+        dAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, osArray);
+        mDrawerList.setAdapter(dAdapter);
     }
 
     private void setupDrawer() {
@@ -160,5 +156,18 @@ public class ListPasswordActivity extends AppCompatActivity {
                 })
                 .setNegativeButton("No", null)
                 .show();
+    }
+
+    /**
+     * Implement protocol methods of Saved Password Adapter
+     */
+    @Override
+    public void onClickPassword(View view, int position) {
+
+    }
+
+    @Override
+    public void onLongClickToDo(View view, int position) {
+
     }
 }

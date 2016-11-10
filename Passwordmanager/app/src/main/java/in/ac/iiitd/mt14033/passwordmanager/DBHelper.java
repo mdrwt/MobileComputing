@@ -52,7 +52,10 @@ public class DBHelper extends SQLiteOpenHelper {
     // Creating Tables
     @Override
     public void onCreate(SQLiteDatabase db) {
-        String CREATE_PASSWORD_TABLE = "CREATE TABLE " + TABLE_PASSWORDS + "( " + KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," + KEY_USERNAME + " TEXT,"+ KEY_NAME + " TEXT," + KEY_URL + " TEXT," + KEY_PASSWORD + " TEXT,"+KEY_SAVE_ALLOWED+" INTEGER)";
+        String CREATE_PASSWORD_TABLE = "CREATE TABLE " + TABLE_PASSWORDS + "( "
+                + KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
+                + KEY_USERNAME + " TEXT,"+ KEY_NAME + " TEXT," + KEY_URL + " TEXT," + KEY_PASSWORD + " TEXT,"
+                +KEY_SAVE_ALLOWED+" INTEGER)";
         String CREATE_MASTER_TABLE = "CREATE TABLE " + TABLE_MASTER + "( " +
                 KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," + KEY_EMAIL +
                 " TEXT," + KEY_PASSWORD + " TEXT,"+
@@ -83,8 +86,8 @@ public class DBHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
-        values.put(KEY_USERNAME, pm.getUserId());
-        values.put(KEY_NAME, pm.get_name());
+        values.put(KEY_USERNAME, pm.getUsername());
+        values.put(KEY_NAME, pm.getName());
         values.put(KEY_URL, pm.getUrl());
         values.put(KEY_PASSWORD, pm.getPassword());
         values.put(KEY_SAVE_ALLOWED, 1); // if adding password assuming that wants to save password
@@ -134,6 +137,12 @@ public class DBHelper extends SQLiteOpenHelper {
 
         return masterUser1;
     }
+
+    /**
+     * Return true if matching email and password entry found
+     * @param masterUser
+     * @return boolean
+     */
     boolean hasMasterUser(MasterUser masterUser) {
         SQLiteDatabase db = this.getReadableDatabase();
 
@@ -163,39 +172,23 @@ public class DBHelper extends SQLiteOpenHelper {
         Cursor cursor = db.query(TABLE_PASSWORDS, new String[] { KEY_ID,
                         KEY_USERNAME, KEY_NAME, KEY_URL, KEY_PASSWORD, KEY_SAVE_ALLOWED }, KEY_ID + "=?",
                 new String[] { String.valueOf(id) }, null, null, null, null);
-        if (cursor != null)
-            cursor.moveToFirst();
-
-        SavedPassword pm = new SavedPassword(Integer.parseInt(cursor.getString(0)),
-                cursor.getString(1), cursor.getString(2), cursor.getString(3), cursor.getString(4));
-        return pm;
-    }
-
-    SavedPassword getPasswordForUsernameAndPackage(String username, String packagename) {
-        SQLiteDatabase db = this.getReadableDatabase();
-
-        String[] projection = new String[] { KEY_ID, KEY_USERNAME, KEY_NAME, KEY_URL, KEY_PASSWORD, KEY_SAVE_ALLOWED};
-        String where = KEY_USERNAME+"=\""+username+"\" AND "
-                + KEY_URL+"=\""+packagename+"\"";
-        Log.v(TAG, "where: "+where);
-        Cursor cursor = db.query(
-                TABLE_PASSWORDS,
-                projection,
-                where,
-                null,
-                null,
-                null,
-                null);
         if (cursor != null && cursor.getCount()>0)
             cursor.moveToFirst();
         else
             return null;
-        SavedPassword pm = new SavedPassword(Integer.parseInt(cursor.getString(0)),
-                cursor.getString(1), cursor.getString(2), cursor.getString(3), cursor.getString(4));
-
-        return pm;
+        int _id = cursor.getInt(cursor.getColumnIndexOrThrow(KEY_ID));
+        String name = cursor.getString(cursor.getColumnIndexOrThrow(KEY_NAME));
+        String password = cursor.getString(cursor.getColumnIndexOrThrow(KEY_PASSWORD));
+        String url = cursor.getString(cursor.getColumnIndexOrThrow(KEY_URL));
+        String username = cursor.getString(cursor.getColumnIndexOrThrow(KEY_USERNAME));
+        return new SavedPassword(_id, name, username, url, password);
     }
 
+    /**
+     * Get Matching password for given packagename. Used for Matching Logins
+     * @param packagename
+     * @return ArrayList
+     */
     ArrayList<MatchingLogin> getPasswordsForPackagename(String packagename) {
         SQLiteDatabase db = this.getReadableDatabase();
 
@@ -254,16 +247,32 @@ public class DBHelper extends SQLiteOpenHelper {
 
     }
 
-    // Getting All passwords
-    public Cursor getAllPasswords() {
+    /**
+     * Returns list of Saved Password in DB
+     * @return ArrayList
+     */
+    public ArrayList<SavedPassword> getAllPasswords() {
         // Select All Query
         String selectQuery = "SELECT * FROM " + TABLE_PASSWORDS;
 
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
 
-        // return password list cursor
-        return cursor;
+        ArrayList<SavedPassword> savedPasswords = new ArrayList<>();
+        if (cursor == null)
+            return savedPasswords;
+        while(cursor.moveToNext()) {
+            int _id = cursor.getInt(cursor.getColumnIndexOrThrow(KEY_ID));
+            String username = cursor.getString(cursor.getColumnIndexOrThrow
+                    (KEY_USERNAME));
+            String name = cursor.getString(cursor.getColumnIndexOrThrow(KEY_NAME));
+            String password = cursor.getString(cursor.getColumnIndexOrThrow
+                    (KEY_PASSWORD));
+            String packname = cursor.getString(cursor.getColumnIndexOrThrow
+                    (KEY_URL));
+            savedPasswords.add(new SavedPassword(_id, password, name, username, packname));
+        }
+        return  savedPasswords;
     }
 
     // Updating single password
@@ -271,20 +280,20 @@ public class DBHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
-        values.put(KEY_USERNAME, pm.getUserId());
+        values.put(KEY_USERNAME, pm.getId());
         values.put(KEY_URL, pm.getUrl());
         values.put(KEY_PASSWORD, pm.getPassword());
 
         // updating row
         return db.update(TABLE_PASSWORDS, values, KEY_ID + " = ?",
-                new String[] { String.valueOf(pm.getID()) });
+                new String[] { String.valueOf(pm.getId()) });
     }
 
     // Deleting single password
     public void deletePassword(SavedPassword pm) {
         SQLiteDatabase db = this.getWritableDatabase();
         db.delete(TABLE_PASSWORDS, KEY_ID + " = ?",
-                new String[] { String.valueOf(pm.getID()) });
+                new String[] { String.valueOf(pm.getId()) });
     }
 
 

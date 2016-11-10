@@ -7,71 +7,69 @@ package in.ac.iiitd.mt14033.passwordmanager.model;
 public class SavedPassword {
 
     //private variables
-    int _id;
-    String _name;
-    String _user_id;
-    String _url;
-    String _password;
+    Integer id;
+    String name;
+    String username;
+    String url;
+    String password;
 
     // Empty constructor
     public SavedPassword(){
 
     }
 
-    public SavedPassword(int _id, String _name, String _user_id, String _url, String _password) {
-        this._id = _id;
-        this._name = _name;
-        this._user_id = _user_id;
-        this._url = _url;
-        this._password = _password;
+    public SavedPassword(Integer id, String name, String username, String url, String password) {
+        this.id = id;
+        this.name = name;
+        this.username = username;
+        this.url = url;
+        this.password = password;
     }
 
-
-    // getting ID
-    public int getID(){
-        return this._id;
+    public SavedPassword(String _name, String _username, String _url, String _password) {
+        this.name = _name;
+        this.username = _username;
+        this.url = _url;
+        this.password = _password;
     }
 
-    // setting id
-    public void setID(int id){
-        this._id = id;
+    public Integer getId() {
+        return id;
     }
 
-    public String get_name() {
-        return _name;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
-    public void set_name(String _name) {
-        this._name = _name;
+    public String getName() {
+        return name;
     }
 
-    // getting user_id
-    public String getUserId(){
-        return this._user_id;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    // setting user_id
-    public void setUserId(String userId){
-        this._user_id = userId;
+    public String getUsername() {
+        return username;
     }
 
-    // getting url
-    public String getUrl(){
-        return this._url;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
-    // setting url
-    public void setUrl(String url){
-        this._url = url;
+    public String getUrl() {
+        return url;
     }
 
-    // getting password
-    public String getPassword(){
-        return this._password;
+    public void setUrl(String url) {
+        this.url = url;
     }
 
-    // setting Password
-    public void setPassword(String password){
-        this._password = password;
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 }
