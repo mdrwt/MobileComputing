@@ -15,6 +15,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import in.ac.iiitd.mt14033.passwordmanager.dialog.DialogGeneratePassword;
 import in.ac.iiitd.mt14033.passwordmanager.model.SavedPassword;
 
 public class AddLoginActivity extends AppCompatActivity implements DialogGeneratePassword.DialogGeneratePasswordListner{
@@ -36,7 +37,7 @@ public class AddLoginActivity extends AppCompatActivity implements DialogGenerat
         passwordET = (EditText) findViewById(R.id.add_login_password_et);
         saveLoginButton = (Button) findViewById(R.id.add_login_save_login_btn);
         usernameET = (EditText) findViewById(R.id.add_login_username_et);
-        String packagename = getIntent().getExtras().getString(getString(R.string.matching_login_package_name));
+        String packagename = getIntent().getExtras().getString(CommonContants.MATCHING_LOGIN_PACKAGE_NAME);
         urlET.setText(packagename);
         nameET.addTextChangedListener(new TextWatcher() {
             @Override
@@ -169,7 +170,7 @@ public class AddLoginActivity extends AppCompatActivity implements DialogGenerat
 
     public void generatePasswordTapped(View view) {
         DialogGeneratePassword dialogGeneratePassword = new DialogGeneratePassword();
-        dialogGeneratePassword.show(getSupportFragmentManager(), "generate_password");
+        dialogGeneratePassword.show(getSupportFragmentManager(), CommonContants.DIALOG_GENERATE_PASSWORD);
     }
 
     /**

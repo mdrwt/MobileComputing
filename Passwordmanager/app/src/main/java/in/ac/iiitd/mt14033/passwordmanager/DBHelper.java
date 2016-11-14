@@ -189,7 +189,7 @@ public class DBHelper extends SQLiteOpenHelper {
      * @param packagename
      * @return ArrayList
      */
-    ArrayList<MatchingLogin> getPasswordsForPackagename(String packagename) {
+    public ArrayList<MatchingLogin> getPasswordsForPackagename(String packagename) {
         SQLiteDatabase db = this.getReadableDatabase();
 
         String[] projection = new String[] { KEY_ID, KEY_USERNAME, KEY_NAME, KEY_URL, KEY_PASSWORD, KEY_SAVE_ALLOWED};

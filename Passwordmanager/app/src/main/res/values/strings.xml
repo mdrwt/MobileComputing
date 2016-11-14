@@ -64,7 +64,7 @@
     <string name="editPassword_toolbar_title">Site</string>
 
     <string name="add_login_toolbar_title">Add New Login</string>
-    <string name= "navdrawer_item0">Generate Password</string>
+    <string name="navdrawer_item0">Generate Password</string>
 
     <string name="aboutapp_toolbar_title">About PasswordWallet</string>
     <string name="AboutApp_textView1">Password Wallet</string>
@@ -88,6 +88,7 @@
     <string name="matching_login_popup_content_description">matchingpasswordpopup</string>
     <string name="dialog_matching_title">Matching Logins</string>
     <string name="add_login_button_text">Add Login</string>
-    <string name="matching_login_package_name">MatchingLoginsPackageName</string>
     <string name="matching_logins">Matching Logins</string>
+    <string name="matching_login_notification_title">Matching Logins</string>
+    <string name="matching_login_notification_subtitle">Tap to autofill or add new login</string>
 </resources>

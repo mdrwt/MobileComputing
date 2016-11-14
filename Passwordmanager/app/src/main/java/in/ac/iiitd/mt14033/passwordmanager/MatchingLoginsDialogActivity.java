@@ -6,10 +6,12 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
 
 import java.util.ArrayList;
 
 import in.ac.iiitd.mt14033.passwordmanager.model.MatchingLogin;
+import in.ac.iiitd.mt14033.passwordmanager.service.MyAccessibilityService;
 
 
 public class MatchingLoginsDialogActivity extends AppCompatActivity implements MatchingLoginsAdapter.OnItemClickListener{
@@ -19,20 +21,22 @@ public class MatchingLoginsDialogActivity extends AppCompatActivity implements M
     private RecyclerView.LayoutManager mLayoutManager;
     private DBHelper dbh;
 
-    private ArrayList<MatchingLogin> studentRecords;
+    private ArrayList<MatchingLogin> matchingLogins;
     private String packagename;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //http://stackoverflow.com/questions/6325018/android-activity-as-dialog-but-without-a-title-bar
+        supportRequestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_matching_logins_dialog);
 
         matchingLoginsList = (RecyclerView)findViewById(R.id.matching_login_list);
         mLayoutManager = new LinearLayoutManager(this);
         matchingLoginsList.setLayoutManager(mLayoutManager);
-        studentRecords = new ArrayList<>();
-        mAdapter = new MatchingLoginsAdapter(studentRecords, this);
+        matchingLogins = new ArrayList<>();
+        mAdapter = new MatchingLoginsAdapter(matchingLogins, this);
         matchingLoginsList.setAdapter(mAdapter);
-        packagename = getIntent().getExtras().getString(getString(R.string.matching_login_package_name));
+        packagename = getIntent().getExtras().getString(CommonContants.MATCHING_LOGIN_PACKAGE_NAME);
         dbh = new DBHelper(this);
         if(packagename.length()==0) {
             Log.v(getString(R.string.VTAG), "Package name is null");

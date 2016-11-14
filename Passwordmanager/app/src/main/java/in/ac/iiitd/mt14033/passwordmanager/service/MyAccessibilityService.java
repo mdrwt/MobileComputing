@@ -1,14 +1,24 @@
-package in.ac.iiitd.mt14033.passwordmanager;
+package in.ac.iiitd.mt14033.passwordmanager.service;
 
 import android.accessibilityservice.AccessibilityService;
 import android.accessibilityservice.AccessibilityServiceInfo;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import android.view.accessibility.AccessibilityEvent;
 import android.view.accessibility.AccessibilityNodeInfo;
 
+import in.ac.iiitd.mt14033.passwordmanager.AddLoginActivity;
+import in.ac.iiitd.mt14033.passwordmanager.CommonContants;
+import in.ac.iiitd.mt14033.passwordmanager.DBHelper;
+import in.ac.iiitd.mt14033.passwordmanager.MatchingLoginsActivity;
+import in.ac.iiitd.mt14033.passwordmanager.R;
 import in.ac.iiitd.mt14033.passwordmanager.model.MatchingLogin;
 
 import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
@@ -17,6 +27,9 @@ public class MyAccessibilityService extends AccessibilityService {
 
     private String requesting_package=null;
     private int requesting_password_et_hash;
+
+    private NotificationCompat.Builder builder;
+    private NotificationManager mNotificationManager;
 
     private MatchingLogin selectedMatchingLogin=null;
 
@@ -76,9 +89,10 @@ public class MyAccessibilityService extends AccessibilityService {
             }
             AccessibilityNodeInfo parent = source.getParent();
             /**
+             * NOTE: This is old implementation here for legacy purposes.
+             * Currently using AlertDialog with transparent activity.
              * Detect popup from our app and respective button pushes within it.
              */
-//            Log.v(getString(R.string.VTAG), event.getPackageName()+" "+getEventType(event)+" "+event.getClassName());
             if(event.getPackageName().equals(getString(R.string.selfpackagename)) &&
                     event.getClassName().equals("android.widget.Button") &&
                     event.getEventType()==AccessibilityEvent.TYPE_VIEW_CLICKED) {
@@ -89,7 +103,7 @@ public class MyAccessibilityService extends AccessibilityService {
                     if(source.getText().equals(getString(R.string.add_login_button_text))) {
                         Log.v(getString(R.string.VTAG), "add_login_button_text");
                         Intent intent = new Intent(this, AddLoginActivity.class);
-                        intent.putExtra(getString(R.string.matching_login_package_name), requesting_package);
+                        intent.putExtra(CommonContants.MATCHING_LOGIN_PACKAGE_NAME, requesting_package);
                         intent.setFlags(FLAG_ACTIVITY_NEW_TASK);
                         startActivity(intent);
 
@@ -109,12 +123,51 @@ public class MyAccessibilityService extends AccessibilityService {
                     event.getClassName().equals("android.widget.EditText") &&
                     event.getEventType()==AccessibilityEvent.TYPE_VIEW_CLICKED) {
                 Log.v(getString(R.string.VTAG), event.getPackageName()+" "+getEventType(event)+" "+event.getClassName());
+                /*
                 Intent intent = new Intent(this, MatchingLoginsDialogActivity.class);
                 requesting_package = event.getPackageName().toString();
                 requesting_password_et_hash = source.hashCode();
                 intent.putExtra(getString(R.string.matching_login_package_name), requesting_package);
                 intent.addFlags(FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
+                */
+
+                mNotificationManager = (NotificationManager)
+                        getSystemService(NOTIFICATION_SERVICE);
+                builder =
+                        new NotificationCompat.Builder(this)
+                                .setSmallIcon(R.mipmap.ic_launcher)
+                                .setContentTitle(getString(R.string.matching_login_notification_title))
+                                .setContentText(getString(R.string.matching_login_notification_subtitle))
+                                .setDefaults(Notification.DEFAULT_ALL)
+                                .setStyle(new NotificationCompat.BigTextStyle()
+                                        .bigText("temporary"))
+                                .setPriority(NotificationCompat.PRIORITY_MAX)
+                                .setCategory(NotificationCompat.CATEGORY_SERVICE)
+                                .setDefaults(NotificationCompat.DEFAULT_ALL)
+//                                .addAction (R.drawable.ic_stat_dismiss,
+//                                        getString(R.string.dismiss), piDismiss)
+//                                .addAction (R.drawable.ic_stat_snooze,
+//                                        getString(R.string.snooze), piSnooze)
+                ;
+                if (Build.VERSION.SDK_INT >= 21) builder.setVibrate(new long[0]);
+
+                Intent intent = new Intent(this, MatchingLoginsActivity.class);
+                requesting_package = event.getPackageName().toString();
+                requesting_password_et_hash = source.hashCode();
+                intent.putExtra(CommonContants.MATCHING_LOGIN_PACKAGE_NAME, requesting_package);
+                intent.addFlags(FLAG_ACTIVITY_NEW_TASK| Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                PendingIntent resultPendingIntent =
+                        PendingIntent.getActivity(
+                                this,
+                                0,
+                                intent,
+                                PendingIntent.FLAG_UPDATE_CURRENT
+                        );
+                builder.setContentIntent(resultPendingIntent);
+                mNotificationManager.notify(CommonContants.NOTIFICATION_ID, builder.build());
+
+
             }
             else if(event.getPackageName().equals(requesting_package) &&
                     event.getEventType()==AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED) {

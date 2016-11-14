@@ -1,10 +1,11 @@
-package in.ac.iiitd.mt14033.passwordmanager;
+package in.ac.iiitd.mt14033.passwordmanager.dialog;
 
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
@@ -17,6 +18,8 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 
 import java.util.Random;
+
+import in.ac.iiitd.mt14033.passwordmanager.R;
 
 import static android.content.Context.MODE_PRIVATE;
 
@@ -34,6 +37,7 @@ public class DialogGeneratePassword extends DialogFragment {
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
+
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         LayoutInflater inflater = getActivity().getLayoutInflater();
         View view = inflater.inflate(R.layout.dialog_generate_password, null);
@@ -93,7 +97,15 @@ public class DialogGeneratePassword extends DialogFragment {
                         mListener.onCancelClick(DialogGeneratePassword.this);
                     }
                 });
-        return builder.create();
+        final AlertDialog mDialog = builder.create();
+        mDialog.setOnShowListener(new DialogInterface.OnShowListener() {
+            @Override
+            public void onShow(DialogInterface dialog) {
+                mDialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(Color.BLUE);
+                mDialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(Color.BLUE);
+            }
+        });
+        return mDialog;
     }
 
     @Nullable
