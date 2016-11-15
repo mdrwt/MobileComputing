@@ -3,6 +3,7 @@ package in.ac.iiitd.mt14033.passwordmanager;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
@@ -11,8 +12,12 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
@@ -26,6 +31,9 @@ public class ListPasswordActivity extends AppCompatActivity implements ListPassw
     final String TAG = "mt14033.ListPass";
     String[] fromColumns = {DBHelper.KEY_ID, DBHelper.KEY_USERNAME, DBHelper.KEY_NAME, DBHelper.KEY_URL, DBHelper.KEY_PASSWORD};
     int[] toViews = {R.id.id, R.id.user_id, R.id.url, R.id.password};
+
+    private CharSequence mDrawerTitle;
+    private CharSequence mTitle;
 
     private ActionBarDrawerToggle mDrawerToggle;
     private DrawerLayout mDrawerLayout;
@@ -74,7 +82,10 @@ public class ListPasswordActivity extends AppCompatActivity implements ListPassw
         this.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         this.getSupportActionBar().setHomeButtonEnabled(true);
 
-
+        Window window = getWindow();
+        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+        window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        window.setStatusBarColor(ContextCompat.getColor(getApplicationContext(), R.color.colorPrimaryDark));
     }
 
     @Override
@@ -90,6 +101,27 @@ public class ListPasswordActivity extends AppCompatActivity implements ListPassw
 
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.password_list_menu, menu);
+        return true;
+    }
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        menu.findItem(R.id.action_search_password).setVisible(true);
+        return super.onPrepareOptionsMenu(menu);
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_search_password:
+                break;
+            default:
+        }
+        return true;
+    }
+
     private void addDrawerItems() {
         String[] osArray = { getResources().getString(R.string.navdrawer_item0) };
         dAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, osArray);
@@ -97,6 +129,7 @@ public class ListPasswordActivity extends AppCompatActivity implements ListPassw
     }
 
     private void setupDrawer() {
+        Toolbar apptoolbar = (Toolbar) findViewById(R.id.listpassword_toolbar);
         mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.string.drawer_open, R.string.drawer_close) {
 
             /** Called when a drawer has settled in a completely open state. */
@@ -113,13 +146,28 @@ public class ListPasswordActivity extends AppCompatActivity implements ListPassw
                 invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()*/
             }
         };
+        mDrawerToggle.syncState();
+        apptoolbar.setNavigationIcon(R.drawable.ic_drawer);
+        apptoolbar.setNavigationOnClickListener(new View.OnClickListener() {
 
+            @Override
+            public void onClick(View v) {
+                Log.v(getString(R.string.VTAG), "drawer tapped");
+                boolean drawerOpen = mDrawerLayout.isDrawerOpen(mDrawerList);
+                if(drawerOpen) {
+                    mDrawerLayout.closeDrawer(Gravity.LEFT);
+                }
+                else {
+                    mDrawerLayout.openDrawer(Gravity.LEFT);
+                }
+            }
+        });
         mDrawerToggle.setDrawerIndicatorEnabled(true);
         mDrawerLayout.setDrawerListener(mDrawerToggle);
     }
 
     private void selectItem(int position){
-        // Handle Nav Options
+        mDrawerLayout.closeDrawers();
         Intent intent;
         switch (position) {
             case 0:
@@ -130,15 +178,7 @@ public class ListPasswordActivity extends AppCompatActivity implements ListPassw
         }
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
 
-        if (mDrawerToggle.onOptionsItemSelected(item)) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
 
     @Override
     public void onBackPressed() {

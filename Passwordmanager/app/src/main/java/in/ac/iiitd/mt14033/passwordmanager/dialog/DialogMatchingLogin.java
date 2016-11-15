@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
@@ -61,8 +60,8 @@ public class DialogMatchingLogin extends DialogFragment implements MatchingLogin
         mDialog.setOnShowListener(new DialogInterface.OnShowListener() {
             @Override
             public void onShow(DialogInterface dialog) {
-                mDialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(Color.BLUE);
-                mDialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(Color.BLUE);
+                mDialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(getResources().getColor(R.color.colorAccent));
+                mDialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(getResources().getColor(R.color.colorAccent));
             }
         });
 
