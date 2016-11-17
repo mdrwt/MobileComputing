@@ -1,0 +1,42 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:padding="6dip">
+
+
+    <ImageView
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        android:id="@+id/userProfileIV"
+        android:src="@drawable/lock_lock"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceListItemSmall"
+        android:text="Welcome"
+        android:id="@+id/userProfileFnameTV"
+        android:layout_below="@+id/userProfileIV"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="Email: "
+        android:id="@+id/userProfileEmailStaticTV"
+        android:layout_below="@+id/userProfileFnameTV"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="email@domain.com"
+        android:id="@+id/userProfileEmailTV"
+        android:layout_alignTop="@+id/userProfileEmailStaticTV"
+        android:layout_toEndOf="@+id/userProfileEmailStaticTV" />
+
+</RelativeLayout>

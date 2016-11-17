@@ -100,8 +100,8 @@ public class DialogGeneratePassword extends DialogFragment {
         mDialog.setOnShowListener(new DialogInterface.OnShowListener() {
             @Override
             public void onShow(DialogInterface dialog) {
-                mDialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(getResources().getColor(R.color.colorAccent));
-                mDialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(getResources().getColor(R.color.colorAccent));
+//                mDialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(Color.GREEN);
+//                mDialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(Color.GREEN);
             }
         });
         return mDialog;

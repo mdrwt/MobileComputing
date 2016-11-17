@@ -29,7 +29,7 @@
         <activity android:name=".SettingsActivity" />
         <activity android:name=".AdvancedSetttingsActivity" />
         <activity android:name=".AboutAppActivity" />
-        <activity android:name=".AddLoginActivity" />
+        <activity android:name=".AddLoginActivity"/>
         <activity
             android:name=".CreateAccountActivity"
             android:label="Create Account" />

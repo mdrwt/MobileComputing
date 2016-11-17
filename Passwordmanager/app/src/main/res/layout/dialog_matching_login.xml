@@ -11,9 +11,9 @@
         android:textSize="26sp"
         android:fontFamily="sans-serif"
         android:gravity="center"
-        android:background="@android:color/white"
+        android:background="@color/colorPrimaryDark"
         android:contentDescription="@string/app_name"
-        android:textColor="@android:color/darker_gray" />
+        android:textColor="#fdd069"/>
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"

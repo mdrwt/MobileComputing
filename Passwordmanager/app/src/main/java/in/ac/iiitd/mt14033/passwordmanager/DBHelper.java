@@ -270,7 +270,7 @@ public class DBHelper extends SQLiteOpenHelper {
                     (KEY_PASSWORD));
             String packname = cursor.getString(cursor.getColumnIndexOrThrow
                     (KEY_URL));
-            savedPasswords.add(new SavedPassword(_id, password, name, username, packname));
+            savedPasswords.add(new SavedPassword(_id, name, username, packname, password));
         }
         return  savedPasswords;
     }

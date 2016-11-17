@@ -10,6 +10,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -34,9 +36,6 @@ public class AddLoginActivity extends AppCompatActivity implements DialogGenerat
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_login);
-
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setHomeButtonEnabled(true);
 
         nameET = (EditText) findViewById(R.id.add_login_name_et);
         urlET = (EditText) findViewById(R.id.add_login_url_et);
@@ -110,10 +109,16 @@ public class AddLoginActivity extends AppCompatActivity implements DialogGenerat
             }
         });
 
+
+
+        boolean open_gen_pass = getIntent().getExtras().getBoolean(CommonContants.OPEN_GEN_PASS, false);
+
         //retrieve the action toolbar (status bar)
         Toolbar apptoolbar = (Toolbar) findViewById(R.id.generatePassword_toolbar);
         setSupportActionBar(apptoolbar);
         getSupportActionBar().setTitle(getResources().getString(R.string.add_login_toolbar_title));
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);
 
         final DBHelper dbh = new DBHelper(this);
 
@@ -149,11 +154,15 @@ public class AddLoginActivity extends AppCompatActivity implements DialogGenerat
 
         });
 
+
         Window window = getWindow();
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
         window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         window.setStatusBarColor(ContextCompat.getColor(getApplicationContext(), R.color.colorPrimaryDark));
 
+        if(open_gen_pass) {
+            generatePasswordTapped(null);
+        }
     }
 
     @Override
@@ -175,6 +184,14 @@ public class AddLoginActivity extends AppCompatActivity implements DialogGenerat
         else {
             finish();
         }
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem menuItem) {
+        if (menuItem.getItemId() == android.R.id.home) {
+            Log.v(getString(R.string.VTAG), "Home button pressed");
+            onBackPressed();
+        }
+        return super.onOptionsItemSelected(menuItem);
     }
 
     public void generatePasswordTapped(View view) {

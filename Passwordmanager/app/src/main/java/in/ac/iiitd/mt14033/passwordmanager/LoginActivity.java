@@ -6,9 +6,11 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.app.LoaderManager.LoaderCallbacks;
+import android.content.Context;
 import android.content.CursorLoader;
 import android.content.Intent;
 import android.content.Loader;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.database.Cursor;
@@ -19,8 +21,6 @@ import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
@@ -33,12 +33,10 @@ import android.view.View.OnClickListener;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -75,6 +73,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     final private String TAG = "mt14033.PM.LoginAct";
     private static DBHelper dbh;
 
+
     // UI references.
     private AutoCompleteTextView mEmailView;
     private EditText mPasswordView;
@@ -82,10 +81,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private View mLoginFormView;
     private Button createAccountButton;
     private TextView forgotPasswordView;
-    private ListView mDrawerList;
     private ArrayAdapter<String> mAdapter;
-    private ActionBarDrawerToggle mDrawerToggle;
-    private DrawerLayout mDrawerLayout;
     private String mActivityTitle;
 
     @Override
@@ -98,21 +94,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         setSupportActionBar(apptoolbar);
         getSupportActionBar().setTitle(getResources().getString(R.string.login_toolbar_title));
 
-        mDrawerList = (ListView)findViewById(R.id.login_navList);
-        mDrawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
         mActivityTitle = getTitle().toString();
-
-        mDrawerList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                selectItem(position);
-            }
-        });
-
-        addDrawerItems();
-        setupDrawer();
-
-
 
         // Set up the login form.
         mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
@@ -156,6 +138,12 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
         window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         window.setStatusBarColor(ContextCompat.getColor(getApplicationContext(), R.color.colorPrimaryDark));
+
+        SharedPreferences sharedPref = LoginActivity.this.getPreferences(Context.MODE_PRIVATE);
+        String logged_user = sharedPref.getString(CommonContants.LOGGED_IN_USER, null);
+        if(logged_user!=null) {
+            gotoListPassword(logged_user);
+        }
     }
 
     @Override
@@ -167,9 +155,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
-        if (mDrawerToggle.onOptionsItemSelected(item)) {
-            return true;
-        }
+
 
         // Handle presses on the action bar items
         switch (item.getItemId()) {
@@ -194,55 +180,16 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         }
     }
 
-    private void addDrawerItems() {
-        String[] osArray = { getResources().getString(R.string.settings_listviewItem2) };
-        mAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, osArray);
-        mDrawerList.setAdapter(mAdapter);
-    }
-
-    private void setupDrawer() {
-        mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.string.drawer_open, R.string.drawer_close) {
-
-            /** Called when a drawer has settled in a completely open state. */
-            public void onDrawerOpened(View drawerView) {
-                /*super.onDrawerOpened(drawerView);
-                getSupportActionBar().setTitle("Navigation!");
-                invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()*/
-            }
-
-            /** Called when a drawer has settled in a completely closed state. */
-            public void onDrawerClosed(View view) {
-                /*super.onDrawerClosed(view);
-                getSupportActionBar().setTitle(mActivityTitle);
-                invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()*/
-            }
-        };
-
-        mDrawerToggle.setDrawerIndicatorEnabled(true);
-        mDrawerLayout.setDrawerListener(mDrawerToggle);
-    }
-
-    private void selectItem(int position){
-        // Handle Nav Options
-        Intent intent;
-        switch (position) {
-            case 0:
-                intent = new Intent(LoginActivity.this, AboutAppActivity.class);
-                startActivity(intent);
-                break;
-        }
-    }
-
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
-        mDrawerToggle.syncState();
+
     }
 
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
-        mDrawerToggle.onConfigurationChanged(newConfig);
+
     }
 
     private void populateAutoComplete() {
@@ -340,15 +287,27 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             MasterUser masterUser = new MasterUser(email, password, null);
             boolean ismaster = dbh.hasMasterUser(masterUser);
             if(ismaster) {
-                Intent myIntent2 = new Intent(LoginActivity.this, ListPasswordActivity.class);
-                myIntent2.putExtra("mEmail", email);
-                startActivity(myIntent2);
+                //Save login
+                SharedPreferences sharedPref;
+                SharedPreferences.Editor editor;
+                sharedPref = LoginActivity.this.getPreferences(Context.MODE_PRIVATE);
+                editor = sharedPref.edit();
+                editor.putString(CommonContants.LOGGED_IN_USER, email);
+                editor.apply();
+
+                gotoListPassword(email);
             }
             else {
                 Toast.makeText(getApplicationContext(), "Invalid details", Toast.LENGTH_SHORT).show();
             }
 
         }
+    }
+
+    private void gotoListPassword(String email) {
+        Intent myIntent2 = new Intent(LoginActivity.this, ListPasswordActivity.class);
+        myIntent2.putExtra(CommonContants.LOGGED_IN_USER, email);
+        startActivity(myIntent2);
     }
 
     private boolean isEmailValid(String email) {

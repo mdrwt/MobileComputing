@@ -18,33 +18,37 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.ListView;
 
 import java.util.ArrayList;
 
+import in.ac.iiitd.mt14033.passwordmanager.drawer.DLOptionSection;
+import in.ac.iiitd.mt14033.passwordmanager.drawer.DLUserProfileSection;
 import in.ac.iiitd.mt14033.passwordmanager.model.SavedPassword;
+import in.ac.iiitd.mt14033.passwordmanager.model.UserProfile;
+import io.github.luizgrp.sectionedrecyclerviewadapter.SectionedRecyclerViewAdapter;
 
-public class ListPasswordActivity extends AppCompatActivity implements ListPasswordRecordAdapter.OnItemClickListener{
+public class ListPasswordActivity extends AppCompatActivity implements ListPasswordRecordAdapter.OnItemClickListener,
+        DLOptionSection.OnItemClickListener{
 
     final String TAG = "mt14033.ListPass";
     String[] fromColumns = {DBHelper.KEY_ID, DBHelper.KEY_USERNAME, DBHelper.KEY_NAME, DBHelper.KEY_URL, DBHelper.KEY_PASSWORD};
     int[] toViews = {R.id.id, R.id.user_id, R.id.url, R.id.password};
 
-    private CharSequence mDrawerTitle;
-    private CharSequence mTitle;
 
     private ActionBarDrawerToggle mDrawerToggle;
     private DrawerLayout mDrawerLayout;
     private ArrayAdapter<String> dAdapter;
     private static String mEmail;
-    private ListView mDrawerList;
+    private RecyclerView mDrawerList;
 
     private RecyclerView savedPasswordList;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
     private ArrayList<SavedPassword> savedPasswords;
+
+    private DLOptionSection dlOptionSection;
+    private DLUserProfileSection dlUserProfileSection;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,23 +69,25 @@ public class ListPasswordActivity extends AppCompatActivity implements ListPassw
         savedPasswordList.setAdapter(mAdapter);
 
 
-        mDrawerList = (ListView)findViewById(R.id.login_navList);
+        mDrawerList = (RecyclerView) findViewById(R.id.login_navList);
         mDrawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
 
-        mDrawerList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                selectItem(position);
-            }
-        });
-
-        mEmail = getIntent().getExtras().getString("mEmail");
-        addDrawerItems();
-        setupDrawer();
+        mEmail = getIntent().getExtras().getString(CommonContants.LOGGED_IN_USER);
 
         this.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         this.getSupportActionBar().setHomeButtonEnabled(true);
 
+        // Use sectioned listview instead of default listview
+        SectionedRecyclerViewAdapter sectionAdapter = new SectionedRecyclerViewAdapter();
+        dlUserProfileSection = new DLUserProfileSection();
+        sectionAdapter.addSection(dlUserProfileSection);
+        dlOptionSection = new DLOptionSection(this, sectionAdapter);
+        sectionAdapter.addSection(dlOptionSection);
+        mDrawerList.setAdapter(sectionAdapter);
+
+        setupDrawer();
+
+        //API>21 change the status bar color.
         Window window = getWindow();
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
         window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
@@ -122,12 +128,6 @@ public class ListPasswordActivity extends AppCompatActivity implements ListPassw
         return true;
     }
 
-    private void addDrawerItems() {
-        String[] osArray = { getResources().getString(R.string.navdrawer_item0) };
-        dAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, osArray);
-        mDrawerList.setAdapter(dAdapter);
-    }
-
     private void setupDrawer() {
         Toolbar apptoolbar = (Toolbar) findViewById(R.id.listpassword_toolbar);
         mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.string.drawer_open, R.string.drawer_close) {
@@ -164,21 +164,10 @@ public class ListPasswordActivity extends AppCompatActivity implements ListPassw
         });
         mDrawerToggle.setDrawerIndicatorEnabled(true);
         mDrawerLayout.setDrawerListener(mDrawerToggle);
+
+        UserProfile userProfile = new UserProfile(mEmail);
+        dlUserProfileSection.updateData(userProfile);
     }
-
-    private void selectItem(int position){
-        mDrawerLayout.closeDrawers();
-        Intent intent;
-        switch (position) {
-            case 0:
-                intent = new Intent(ListPasswordActivity.this, AddLoginActivity.class);
-                intent.putExtra("mEmail", mEmail);
-                startActivity(intent);
-                break;
-        }
-    }
-
-
 
     @Override
     public void onBackPressed() {
@@ -208,6 +197,29 @@ public class ListPasswordActivity extends AppCompatActivity implements ListPassw
 
     @Override
     public void onLongClickToDo(View view, int position) {
+
+    }
+
+    /**
+     * Implement protocols for Drawer option selection
+     */
+    @Override
+    public void onClickDLOption(View view, int position) {
+        mDrawerLayout.closeDrawers();
+        Intent intent;
+        switch (position) {
+            case 0:
+                intent = new Intent(ListPasswordActivity.this, AddLoginActivity.class);
+                intent.putExtra(CommonContants.LOGGED_IN_USER, mEmail);
+                startActivity(intent);
+                break;
+            case 1:
+                intent = new Intent(ListPasswordActivity.this, AddLoginActivity.class);
+                intent.putExtra(CommonContants.LOGGED_IN_USER, mEmail);
+                intent.putExtra(CommonContants.OPEN_GEN_PASS, true);
+                startActivity(intent);
+                break;
+        }
 
     }
 }

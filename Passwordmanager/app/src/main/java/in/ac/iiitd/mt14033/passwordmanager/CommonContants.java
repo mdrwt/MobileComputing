@@ -15,4 +15,6 @@ public final class CommonContants {
     public static final String MATCHING_LOGIN_PACKAGE_NAME = "MatchingLoginsPackageName";
     public static final String DIALOG_MATCHING_LOGIN = "dialogmatchinglogin";
     public static final String DIALOG_GENERATE_PASSWORD= "dialoggeneratepassword";
+    public static final String OPEN_GEN_PASS= "opengeneratepassword";
+    public static final String LOGGED_IN_USER= "loggedinuser";
 }
