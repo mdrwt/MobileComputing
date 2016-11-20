@@ -3,7 +3,9 @@ package in.ac.iiitd.mt14033.passwordmanager.dialog;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
@@ -21,7 +23,9 @@ import in.ac.iiitd.mt14033.passwordmanager.DBHelper;
 import in.ac.iiitd.mt14033.passwordmanager.MatchingLoginsAdapter;
 import in.ac.iiitd.mt14033.passwordmanager.R;
 import in.ac.iiitd.mt14033.passwordmanager.model.MatchingLogin;
-
+/**
+ * Created by Madhur on 09/11/16.
+ */
 public class DialogMatchingLogin extends DialogFragment implements MatchingLoginsAdapter.OnItemClickListener{
 
     private RecyclerView matchingLoginsList;
@@ -79,15 +83,16 @@ public class DialogMatchingLogin extends DialogFragment implements MatchingLogin
             Log.v(getString(R.string.VTAG), "Package name is null");
         }
 
+        SharedPreferences sharedPref = getActivity().getApplicationContext().getSharedPreferences(CommonContants.preference_file_key, Context.MODE_PRIVATE);
+        String logged_user = sharedPref.getString(CommonContants.LOGGED_IN_USER, null);
+
         ArrayList<MatchingLogin> matchingLogins = new ArrayList<>();
         if(requesting_package.length()!=0) {
-            matchingLogins = dbh.getPasswordsForPackagename(requesting_package);
+            matchingLogins = dbh.getPasswordsForPackagename(requesting_package, logged_user);
             Log.v(getString(R.string.VTAG), "Found matches: "+matchingLogins.size());
         }
         MatchingLoginsAdapter adapter = (MatchingLoginsAdapter)matchingLoginsList.getAdapter();
         adapter.updateData(matchingLogins);
-
-
 
         return mDialog;
     }

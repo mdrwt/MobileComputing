@@ -17,4 +17,5 @@ public final class CommonContants {
     public static final String DIALOG_GENERATE_PASSWORD= "dialoggeneratepassword";
     public static final String OPEN_GEN_PASS= "opengeneratepassword";
     public static final String LOGGED_IN_USER= "loggedinuser";
+    public static final String preference_file_key = "in.ac.iiitd.mt14033.passwordmanager.PREFERENCE_FILE_KEY";
 }

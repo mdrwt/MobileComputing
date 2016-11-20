@@ -91,4 +91,8 @@
     <string name="matching_logins">Matching Logins</string>
     <string name="matching_login_notification_title">Matching Logins</string>
     <string name="matching_login_notification_subtitle">Tap to autofill or add new login</string>
+    <string name="add_login_not_logged_in">Please log in first to add new login.</string>
+
+    <!--Logout-->
+    <string name="logout_message">You have been logged out.</string>
 </resources>

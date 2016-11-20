@@ -1,7 +1,9 @@
 package in.ac.iiitd.mt14033.passwordmanager;
 
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.content.ContextCompat;
@@ -22,7 +24,9 @@ import android.widget.Toast;
 
 import in.ac.iiitd.mt14033.passwordmanager.dialog.DialogGeneratePassword;
 import in.ac.iiitd.mt14033.passwordmanager.model.SavedPassword;
-
+/**
+ * Created by Madhur on 09/11/16.
+ */
 public class AddLoginActivity extends AppCompatActivity implements DialogGeneratePassword.DialogGeneratePasswordListner{
 
     private EditText urlET;
@@ -42,7 +46,7 @@ public class AddLoginActivity extends AppCompatActivity implements DialogGenerat
         passwordET = (EditText) findViewById(R.id.add_login_password_et);
         saveLoginButton = (Button) findViewById(R.id.add_login_save_login_btn);
         usernameET = (EditText) findViewById(R.id.add_login_username_et);
-        String packagename = getIntent().getExtras().getString(CommonContants.MATCHING_LOGIN_PACKAGE_NAME);
+        String packagename = getIntent().getStringExtra(CommonContants.MATCHING_LOGIN_PACKAGE_NAME);
         urlET.setText(packagename);
         nameET.addTextChangedListener(new TextWatcher() {
             @Override
@@ -109,23 +113,15 @@ public class AddLoginActivity extends AppCompatActivity implements DialogGenerat
             }
         });
 
-
-
-        boolean open_gen_pass = getIntent().getExtras().getBoolean(CommonContants.OPEN_GEN_PASS, false);
-
-        //retrieve the action toolbar (status bar)
-        Toolbar apptoolbar = (Toolbar) findViewById(R.id.generatePassword_toolbar);
-        setSupportActionBar(apptoolbar);
-        getSupportActionBar().setTitle(getResources().getString(R.string.add_login_toolbar_title));
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setHomeButtonEnabled(true);
+        boolean open_gen_pass = getIntent().getBooleanExtra(CommonContants.OPEN_GEN_PASS, false);
 
         final DBHelper dbh = new DBHelper(this);
 
         saveLoginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                SharedPreferences sharedPref = getApplicationContext().getSharedPreferences(CommonContants.preference_file_key, Context.MODE_PRIVATE);
+                String logged_user = sharedPref.getString(CommonContants.LOGGED_IN_USER, null);
                 String url = urlET.getText().toString();
 //                if (!URLUtil.isValidUrl(url)) {
 //                    Toast toast = Toast.makeText(getApplicationContext(), getString(R.string.ERROR_INVALID_URL), Toast.LENGTH_SHORT);
@@ -136,6 +132,7 @@ public class AddLoginActivity extends AppCompatActivity implements DialogGenerat
                 String username = usernameET.getText().toString();
                 String name = nameET.getText().toString();
                 SavedPassword pm = new SavedPassword();
+                pm.setMaster_email(logged_user);
                 pm.setPassword(password);
                 pm.setName(name);
                 pm.setUrl(url);
@@ -154,6 +151,12 @@ public class AddLoginActivity extends AppCompatActivity implements DialogGenerat
 
         });
 
+        //retrieve the action toolbar (status bar)
+        Toolbar apptoolbar = (Toolbar) findViewById(R.id.generatePassword_toolbar);
+        setSupportActionBar(apptoolbar);
+        getSupportActionBar().setTitle(getResources().getString(R.string.add_login_toolbar_title));
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);
 
         Window window = getWindow();
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
@@ -167,9 +170,11 @@ public class AddLoginActivity extends AppCompatActivity implements DialogGenerat
 
     @Override
     public void onBackPressed() {
+        /**
+         * Show confirmation dialog only when user made some possible edit in some fields.
+         */
         if(hasUnsavedChanges) {
             new AlertDialog.Builder(this)
-                    .setIcon(android.R.drawable.sym_def_app_icon)
                     .setTitle("Exit?")
                     .setMessage("Are you sure you want to leave?")
                     .setPositiveButton("Yes", new DialogInterface.OnClickListener() {

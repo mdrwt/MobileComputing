@@ -1,7 +1,7 @@
 package in.ac.iiitd.mt14033.passwordmanager.model;
 
 /**
- * Created by devashish on 10/25/16.
+ * Created by Madhur on 09/11/16.
  */
 
 public class MatchingLogin {

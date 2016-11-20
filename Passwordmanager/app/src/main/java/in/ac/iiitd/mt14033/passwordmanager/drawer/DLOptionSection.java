@@ -11,7 +11,7 @@ import io.github.luizgrp.sectionedrecyclerviewadapter.SectionedRecyclerViewAdapt
 import io.github.luizgrp.sectionedrecyclerviewadapter.StatelessSection;
 
 /**
- * Created by Madhur on 04/06/16.
+ * Created by Madhur on 09/11/16.
  */
 public class DLOptionSection extends StatelessSection {
     private ArrayList<DLOption> mDataset;

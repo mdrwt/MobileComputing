@@ -22,7 +22,9 @@ import in.ac.iiitd.mt14033.passwordmanager.R;
 import in.ac.iiitd.mt14033.passwordmanager.model.MatchingLogin;
 
 import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
-
+/**
+ * Created by Madhur on 09/11/16.
+ */
 public class MyAccessibilityService extends AccessibilityService {
 
     private String requesting_package=null;
@@ -32,6 +34,7 @@ public class MyAccessibilityService extends AccessibilityService {
     private NotificationManager mNotificationManager;
 
     private MatchingLogin selectedMatchingLogin=null;
+    private AccessibilityNodeInfo usernameET;
 
     private static MyAccessibilityService myAccessibilityServiceInstance;
 
@@ -182,17 +185,23 @@ public class MyAccessibilityService extends AccessibilityService {
                     arguments.putCharSequence(AccessibilityNodeInfo
                                     .ACTION_ARGUMENT_SET_TEXT_CHARSEQUENCE,
                             selectedMatchingLogin.getPassword());
-                    passwordField.performAction(AccessibilityNodeInfo.ACTION_SET_TEXT, arguments);
-                    AccessibilityNodeInfo prev = getPrevEditText(passwordField);
+                    AccessibilityNodeInfo prev=null;
+                    if(passwordField!=null) {
+                        passwordField.performAction(AccessibilityNodeInfo.ACTION_SET_TEXT, arguments);
+                        prev = getSiblingEditTextUsername(passwordField);
+                    }
                     /**
                      * set the is username in the username field.
                      */
                     Bundle newBundle = new Bundle();
                     newBundle.putCharSequence(AccessibilityNodeInfo.ACTION_ARGUMENT_SET_TEXT_CHARSEQUENCE,
                             selectedMatchingLogin.getUsername());
-                    prev.performAction(AccessibilityNodeInfo.ACTION_SET_TEXT, newBundle);
+                    if(prev!=null)
+                        prev.performAction(AccessibilityNodeInfo.ACTION_SET_TEXT, newBundle);
 
                     Log.v(getString(R.string.VTAG), "selected match "+ selectedMatchingLogin.toString());
+                    requesting_package=null;
+                    selectedMatchingLogin=null;
                 }
             }
         }
@@ -234,29 +243,111 @@ public class MyAccessibilityService extends AccessibilityService {
         }
         return null;
     }
-    public AccessibilityNodeInfo getPrevEditText(AccessibilityNodeInfo source) {
+
+    /**
+     * For simple views where parent has all the username and other fields
+     * simply get parent and its childs and return previous child if it is edittext
+     * (which is most likely to be the username/email field)
+     */
+    public AccessibilityNodeInfo getSiblingEditTextUsername(AccessibilityNodeInfo source) {
         AccessibilityNodeInfo parent = source.getParent();
         if(parent==null) {
             return null;
         }
         int nchild = parent.getChildCount();
-        if (nchild<2)
-            return null;
-        for (int i=0; i<nchild; ++i) {
-            AccessibilityNodeInfo child = parent.getChild(i);
-            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.JELLY_BEAN_MR2) {
-                if(child.isPassword()) {
-                    if(i>0) {
-                        return parent.getChild(i-1);
-                    }
-                    else {
-                        return null;
+        if (nchild>=2) {
+            for (int i=0; i<nchild; ++i) {
+                AccessibilityNodeInfo child = parent.getChild(i);
+                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.JELLY_BEAN_MR2) {
+                    if(child.isPassword()) {
+                        if(i>0) {
+                            AccessibilityNodeInfo prevsibling = parent.getChild(i-1);
+                            if(prevsibling.getClassName().equals("android.widget.EditText")) {
+                                return parent.getChild(i-1);
+                            }
+
+                        }
+                        else {
+                            return null;
+                        }
                     }
                 }
             }
         }
+        return getCousinEditTextUsername(source);
+    }
+
+    /**
+     * http://www.geeksforgeeks.org/print-cousins-of-a-given-node-in-binary-tree/
+     * For complex UI where parent does not have username field but
+     * some other ancestor has username field as child subchild we try to find cousins and the preceeding cousin
+     * would be out username/email field.
+     *
+     * Parent------LinearLayout------usernameET
+     *      |------LinearLayout------PasswordET
+     *      |------Button
+     *      |------Button
+     *      |------Button
+     */
+    int getLevel(AccessibilityNodeInfo root, AccessibilityNodeInfo source, int level) {
+        if(root==null)
+            return 0;
+        if(root.hashCode()==source.hashCode()) {
+            return level;
+        }
+        int childcount=root.getChildCount();
+        for(int i=0; i<childcount; ++i) {
+            int downlevel = getLevel(root.getChild(i), source, level+1);
+            if(downlevel!=0)
+                return downlevel;
+        }
+        return 0;
+    }
+    private AccessibilityNodeInfo getCousinEditText(AccessibilityNodeInfo root, AccessibilityNodeInfo source, int level) {
+        if(root==null || level<2) {
+            return null;
+        }
+        if(level==2) {
+            int childcount=root.getChildCount();
+            for(int i=0; i<childcount; ++i) {
+                AccessibilityNodeInfo child = root.getChild(i);
+                if(child.hashCode()==source.hashCode()) {
+                    /**
+                     * we wait till we get our password field.
+                     * the last edittext we got as child of previous parent would be out required username field.
+                     */
+                    return usernameET;
+                }
+            }
+            for(int i=0; i<childcount; ++i) {
+                AccessibilityNodeInfo child = root.getChild(i);
+                if(child.getClassName().equals("android.widget.EditText")) {
+                    Log.v(getString(R.string.VTAG), "setting new username ET....");
+                    /**
+                     * Store username ET. We will return at when we find our password field.
+                     * ie. We will store and return EditText found just before password field.
+                     */
+                    usernameET = child;
+                }
+            }
+        }
+        else if(level>2) {
+            int childcount=root.getChildCount();
+            for(int i=0; i<childcount; ++i) {
+                AccessibilityNodeInfo cousin = getCousinEditText(root.getChild(i), source, level-1);
+                if(cousin!=null)
+                    return cousin;
+            }
+        }
         return null;
     }
+    private AccessibilityNodeInfo getCousinEditTextUsername(AccessibilityNodeInfo source) {
+        int level = getLevel(getRootInActiveWindow(), source, 1);
+
+        return getCousinEditText(getRootInActiveWindow(), source, level);
+
+    }
+
 
     /**
      * Searches for edittext field of type password in the child heirarchy and returns it.

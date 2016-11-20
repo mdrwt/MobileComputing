@@ -8,7 +8,7 @@ import android.widget.TextView;
 import in.ac.iiitd.mt14033.passwordmanager.R;
 
 /**
- * Created by Madhur on 04/06/16.
+ * Created by Madhur on 09/11/16.
  */
 public class DLUserProfileHeaderViewHolder extends RecyclerView.ViewHolder{
     final TextView fnameTV;

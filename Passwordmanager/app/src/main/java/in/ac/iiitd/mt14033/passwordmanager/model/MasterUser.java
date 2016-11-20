@@ -1,7 +1,7 @@
 package in.ac.iiitd.mt14033.passwordmanager.model;
 
 /**
- * Created by anshika on 10/22/16.
+ * Created by Madhur on 09/11/16.
  */
 
 public class MasterUser {

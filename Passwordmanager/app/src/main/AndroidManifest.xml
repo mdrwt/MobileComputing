@@ -16,7 +16,7 @@
         <activity android:name=".MainActivity" />
         <activity
             android:name=".LoginActivity"
-            android:noHistory="true">
+            android:excludeFromRecents="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -31,10 +31,8 @@
         <activity android:name=".AboutAppActivity" />
         <activity android:name=".AddLoginActivity"/>
         <activity
-            android:name=".CreateAccountActivity"
-            android:label="Create Account" />
-        <activity
             android:name=".RegisterActivity"
+            android:parentActivityName=".LoginActivity"
             android:label="Create Account" />
         <activity
             android:name=".MatchingLoginsDialogActivity"
@@ -63,6 +61,7 @@
             android:name=".MatchingLoginsActivity"
             android:noHistory="true"
             android:launchMode="singleInstance"
+            android:excludeFromRecents="true"
             android:taskAffinity=""
             android:theme="@style/Theme.AppCompat.Translucent">
         </activity>

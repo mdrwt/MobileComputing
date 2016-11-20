@@ -8,6 +8,7 @@ public class SavedPassword {
 
     //private variables
     Integer id;
+    String master_email;
     String name;
     String username;
     String url;
@@ -18,19 +19,29 @@ public class SavedPassword {
 
     }
 
-    public SavedPassword(Integer id, String name, String username, String url, String password) {
+    public SavedPassword(Integer id, String master_email, String name, String username, String url, String password) {
         this.id = id;
+        this.master_email = master_email;
         this.name = name;
         this.username = username;
         this.url = url;
         this.password = password;
     }
 
-    public SavedPassword(String _name, String _username, String _url, String _password) {
+    public SavedPassword(String master_email, String _name, String _username, String _url, String _password) {
+        this.master_email = master_email;
         this.name = _name;
         this.username = _username;
         this.url = _url;
         this.password = _password;
+    }
+
+    public String getMaster_email() {
+        return master_email;
+    }
+
+    public void setMaster_email(String master_email) {
+        this.master_email = master_email;
     }
 
     public Integer getId() {

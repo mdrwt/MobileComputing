@@ -139,10 +139,10 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         window.setStatusBarColor(ContextCompat.getColor(getApplicationContext(), R.color.colorPrimaryDark));
 
-        SharedPreferences sharedPref = LoginActivity.this.getPreferences(Context.MODE_PRIVATE);
+       SharedPreferences sharedPref = getApplicationContext().getSharedPreferences(CommonContants.preference_file_key, Context.MODE_PRIVATE);
         String logged_user = sharedPref.getString(CommonContants.LOGGED_IN_USER, null);
         if(logged_user!=null) {
-            gotoListPassword(logged_user);
+            gotoListPassword(logged_user, null);
         }
     }
 
@@ -155,8 +155,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
-
-
         // Handle presses on the action bar items
         switch (item.getItemId()) {
             /*case R.id.action_search:
@@ -167,7 +165,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 //onClick method when createAccount button will be pressed
                 Log.d(TAG, "Inside Create Account onClick method");
                 //create intent from LoginActivity to CreateAccount activity
-                Intent createAccountIntent = new Intent(LoginActivity.this, CreateAccountActivity.class);
+                Intent createAccountIntent = new Intent(LoginActivity.this, RegisterActivity.class);
                 startActivity(createAccountIntent);
                 return true;
             case R.id.action_settings:
@@ -290,12 +288,17 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 //Save login
                 SharedPreferences sharedPref;
                 SharedPreferences.Editor editor;
-                sharedPref = LoginActivity.this.getPreferences(Context.MODE_PRIVATE);
+                sharedPref = getApplicationContext().getSharedPreferences(CommonContants.preference_file_key, Context.MODE_PRIVATE);
                 editor = sharedPref.edit();
                 editor.putString(CommonContants.LOGGED_IN_USER, email);
                 editor.apply();
 
-                gotoListPassword(email);
+                /**
+                 * When user comes to login screen while trying to add new login from dialog
+                 * ie. when trying to add new login but user was not looged in in our app.
+                 */
+                String matching_login_packagename = getIntent().getExtras().getString(CommonContants.MATCHING_LOGIN_PACKAGE_NAME, null);
+                gotoListPassword(email, matching_login_packagename);
             }
             else {
                 Toast.makeText(getApplicationContext(), "Invalid details", Toast.LENGTH_SHORT).show();
@@ -304,10 +307,13 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         }
     }
 
-    private void gotoListPassword(String email) {
+    private void gotoListPassword(String email, String matching_login_packagename) {
         Intent myIntent2 = new Intent(LoginActivity.this, ListPasswordActivity.class);
         myIntent2.putExtra(CommonContants.LOGGED_IN_USER, email);
+        if(matching_login_packagename!=null)
+            myIntent2.putExtra(CommonContants.MATCHING_LOGIN_PACKAGE_NAME, matching_login_packagename);
         startActivity(myIntent2);
+        finish();
     }
 
     private boolean isEmailValid(String email) {

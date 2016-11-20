@@ -21,7 +21,9 @@ import java.util.Random;
 import in.ac.iiitd.mt14033.passwordmanager.R;
 
 import static android.content.Context.MODE_PRIVATE;
-
+/**
+ * Created by Madhur on 09/11/16.
+ */
 public class DialogGeneratePassword extends DialogFragment {
 
     TextView generatedTV;

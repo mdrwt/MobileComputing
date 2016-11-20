@@ -1,5 +1,7 @@
 package in.ac.iiitd.mt14033.passwordmanager;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -13,7 +15,9 @@ import java.util.ArrayList;
 import in.ac.iiitd.mt14033.passwordmanager.model.MatchingLogin;
 import in.ac.iiitd.mt14033.passwordmanager.service.MyAccessibilityService;
 
-
+/**
+ * Created by Madhur on 09/11/16.
+ */
 public class MatchingLoginsDialogActivity extends AppCompatActivity implements MatchingLoginsAdapter.OnItemClickListener{
 
     private RecyclerView matchingLoginsList;
@@ -69,9 +73,11 @@ public class MatchingLoginsDialogActivity extends AppCompatActivity implements M
     @Override
     protected void onResume() {
         super.onResume();
+        SharedPreferences sharedPref = getApplicationContext().getSharedPreferences(CommonContants.preference_file_key, Context.MODE_PRIVATE);
+        String logged_user = sharedPref.getString(CommonContants.LOGGED_IN_USER, null);
         ArrayList<MatchingLogin> matchingLogins = new ArrayList<>();
         if(packagename.length()!=0) {
-            matchingLogins = dbh.getPasswordsForPackagename(packagename);
+            matchingLogins = dbh.getPasswordsForPackagename(packagename, logged_user);
             Log.v(getString(R.string.VTAG), "Found matches: "+matchingLogins.size());
         }
         MatchingLoginsAdapter adapter = (MatchingLoginsAdapter)matchingLoginsList.getAdapter();

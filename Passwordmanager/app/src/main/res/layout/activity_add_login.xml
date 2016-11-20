@@ -107,7 +107,7 @@
                 android:text="@string/save_password_button_text"
                 android:layout_marginTop="8dp"
                 android:id="@+id/add_login_save_login_btn"
-                android:background="#fa1100"
+                android:background="@color/colorPrimaryButton"
                 android:textColor="@android:color/white" />
 
         </LinearLayout>
