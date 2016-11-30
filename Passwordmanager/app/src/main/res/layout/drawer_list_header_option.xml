@@ -1,8 +1,0 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="2dp"
-    android:padding="6dip"
-    android:background="@color/dim_foreground_disabled_material_dark">
-
-
-</RelativeLayout>
